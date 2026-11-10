@@ -1,0 +1,3 @@
+method,cell,seed,records,predictions
+S1Pert,hepg2,17,../workspace/a4/data/hepg2/seed_17/test/records.npy,../workspace/predictions/S1Pert/hepg2/seed_17/test_predictions.npz
+P1,hepg2,17,../workspace/a4/data/hepg2/seed_17/test/records.npy,../workspace/predictions/P1/hepg2/seed_17/test_predictions.npz

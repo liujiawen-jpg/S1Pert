@@ -1,0 +1,33 @@
+[build-system]
+requires = ["setuptools>=68", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "s1pert"
+version = "0.2.0"
+description = "S1Pert: DECIDER representations for perturbation response classification"
+readme = "README.md"
+requires-python = ">=3.11"
+dependencies = [
+  "numpy>=1.26,<2", "scipy>=1.11", "pandas>=2.1", "h5py>=3.10",
+  "pyarrow>=14"
+]
+
+[project.optional-dependencies]
+test = ["pytest>=8"]
+train = ["torch>=2.7"]
+
+[project.scripts]
+s1pert = "jev_a4.cli:main"
+jev-a4 = "jev_a4.cli:main"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.setuptools.package-data]
+"jev_a4.core.vendor" = ["*.json"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests", "src/jev_a4/labels/test_resolution_bundle.py"]
+pythonpath = ["src", "src/jev_a4/core"]
+addopts = "-ra"

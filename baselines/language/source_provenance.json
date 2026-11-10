@@ -1,0 +1,20 @@
+{
+  "schema": "s1pert.baseline-source-provenance.v1",
+  "method": "Qwen3-4B-LoRA adapted",
+  "historical_source_filename": "run_pertreasonqa_lora_a4.py",
+  "historical_source_sha256": "3aab9694b17f61a993ad6592cc32c73e877b1bf2afd8cb61b57b648676e06223",
+  "historical_registry_method": "PertReasonLM-LoRA-A4-adapted",
+  "release_filename": "qwen3_lora.py",
+  "backbone_revision": "1cfa9a7208912126459214e8b04321603b3df60c",
+  "scientific_calculations_retained": true,
+  "portable_changes": [
+    "Explicit configuration-relative resource paths",
+    "Package metric import",
+    "Guard optional Torch python_native dispatch setting",
+    "Reject overwriting nonempty per-run output directories",
+    "Command-line evaluation batch defaults to the completed matrix's recorded value of 512",
+    "Additional pair-aligned NPZ export for the shared evaluator, without changing probabilities"
+  ],
+  "full_training_reexecuted_for_release": false,
+  "external_model_or_task_weights_bundled": false
+}

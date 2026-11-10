@@ -1,0 +1,17 @@
+{
+  "schema": "s1pert.baseline-source-availability.v1",
+  "method": "ALIGNED",
+  "training_source_status": "NOT_FOUND_IN_INSPECTED_ACCESSIBLE_SOURCE_TREES",
+  "prediction_export_schema": "aligned.frozen-hybrid-scores.v1",
+  "export_bundled": false,
+  "shared_evaluator_supported": true,
+  "expected_source_hashes_from_export_metadata": {
+    "aligned_engine.py": "4da58e362385daa87849f8904569eef2d0bc9bb2b3c0bcd0cff0a91c62288483",
+    "aligned_data.py": "7a37ca8cf0c327dd6e456982a496d89c2a1d076fef51bea9269298ee35292a3d",
+    "aligned_runtime.py": "6283205974175624eeb10d067da3063b73ad8db69aee1c293e664341bdef98b5",
+    "aligned_runner.py": "557bb59b85f2d24f4337727bf7b266379b09bf6ed618c923509c97249dafc660",
+    "official_source/aligned/abl.py": "f66cbbbaf712f4c8546cd9d8707dd9ab51d3fe5d7334a6b22b84b4be0953f3ed",
+    "official_source/aligned/learner_adap.py": "8bd7cfd92c2a4b96a461c451d8f8c0506e12cf2535bdfbaae933665bd4403602",
+    "official_source/aligned/reasoner.py": "b6e9b221ffc4b4fa57e3203fb1b1535200727658f07e27f2e46ed6ca1f28bf67"
+  }
+}

@@ -1,0 +1,12 @@
+# Historical encoding stack, observed locally; not a hardware-independent lock.
+# Install a compatible CUDA-enabled torch 2.7.1 build separately.
+# Python 3.12.14 was used for historical A4.
+# Obtain DECIDER-4b-v1 weights and its matching decider/ source separately.
+transformers==5.17.0
+tokenizers==0.23.2
+safetensors==0.8.0
+flash-linear-attention==0.5.2
+fla-core==0.5.2
+triton==3.3.1
+huggingface-hub==1.33.0
+jinja2==3.1.6

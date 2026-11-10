@@ -1,0 +1,46 @@
+{
+  "schema": "jev-a4.extracted-components.v1",
+  "purpose": "Locally sourced historical A4 helper components. External DECIDER source and weights are not distributed. Historical experiment CLIs are removed; authorship and redistribution rights require separate verification.",
+  "files": {
+    "prior_model.py": {
+      "original_sha256": "9891e190115c0cf7bbd4718cd6540f283217cba25b6dbfb00fa1aece8a89415c",
+      "retained_functions": [
+        "_sdpa",
+        "make_prior_model"
+      ],
+      "current_sha256": "40874002208023348acff2a3695c48c1c5ab2387f77b1a35d7865f539311e7d9"
+    },
+    "shared_core.py": {
+      "original_sha256": "1dcc3b6825dc0842d80f96c04f76abb1011c33156ac09fd68a772ecf17b84efa",
+      "retained_functions": [
+        "_text_components",
+        "torch_arange",
+        "split_forward"
+      ],
+      "current_sha256": "4c8903be2d42f8eced03eed2cd6e1eecf6a1d98fdff87dba4c90e1143509fe9c"
+    },
+    "encode_joint_last8_cache.py": {
+      "original_sha256": "e1fb53d5c35afaae3dbf163785c280790ea3f32f97e77330a69c10ac60395b01",
+      "retained_functions": [
+        "pool_contextual_landmarks",
+        "_run_tuple_batch"
+      ],
+      "current_sha256": "524df7032c0ab20c1c998ae59678d6798ed107440d3c368b321396070b65d318"
+    },
+    "native_engine.py": {
+      "original_sha256": "4686d6ef7b59797c8fd00b00ef4523fcd14232f5e74363a90f8b7c5fb9ba8a5c",
+      "retained_functions": [
+        "dump",
+        "sha",
+        "file_identity",
+        "checkpoint_target",
+        "checkpoint_dtype_allowed",
+        "_load_model"
+      ],
+      "current_sha256": "5a08c9e0e503361ecd8ea14a442a6b9968a3a7ba924c4fd0c9c5eba51baf9b5d",
+      "portable_helpers": [
+        "_external_decider_components"
+      ]
+    }
+  }
+}

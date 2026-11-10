@@ -1,0 +1,7 @@
+torch>=2.7
+torch-geometric>=2.5
+scikit-learn>=1.4
+psutil>=5.9
+packaging
+einops
+# Also install the upstream dependencies and torch-scatter for your CUDA build.

@@ -1,0 +1,38 @@
+{
+  "method": "STATE-ST-native-strict-A4-adapted",
+  "a4_data": "../../workspace/a4/data",
+  "a4_metrics": "../../src/jev_a4/core/metrics.py",
+  "expression_root": "../../workspace/classical/prepared",
+  "esm_source": "../../assets/esm2",
+  "official_source": "../../external/state",
+  "official_commit": "9bbfe78a434a55205e4de834e1ea99f85f7a3add",
+  "python": null,
+  "gpu_uuid": "0",
+  "cells": [
+    "hepg2",
+    "jurkat",
+    "rpe1",
+    "k562_essential"
+  ],
+  "seeds": [
+    17,
+    29,
+    43,
+    61,
+    89
+  ],
+  "threads": 4,
+  "cell_set_len": 128,
+  "batch_conditions": 16,
+  "lr": 0.0001,
+  "gradient_clip": 10.0,
+  "min_epochs": 10,
+  "max_epochs": 100,
+  "patience": 10,
+  "min_delta": 0.0001,
+  "max_rss_gib": 16,
+  "gpu_memory_budget_gib": 24,
+  "eval_control_cells": 128,
+  "prediction_anchor_or_old_task_weights": false,
+  "continuous_monitoring": false
+}

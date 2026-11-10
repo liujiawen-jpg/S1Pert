@@ -1,0 +1,24 @@
+{
+  "preprocess": {
+    "output": "../workspace/preprocessed",
+    "block_cells": 256,
+    "datasets": {
+      "hepg2": {
+        "kind": "nadig",
+        "raw": "../data/raw/Nadig2024_GSE264667_raw/GSE264667_hepg2_raw_singlecell_01.h5ad"
+      },
+      "jurkat": {
+        "kind": "nadig",
+        "raw": "../data/raw/Nadig2024_GSE264667_raw/GSE264667_jurkat_raw_singlecell_01.h5ad"
+      },
+      "rpe1": {
+        "kind": "replogle",
+        "raw": "../data/raw/scPerturb_prepro/ReplogleWeissman2022_rpe1.h5ad"
+      },
+      "k562_essential": {
+        "kind": "replogle",
+        "raw": "../data/raw/scPerturb_prepro/ReplogleWeissman2022_K562_essential.h5ad"
+      }
+    }
+  }
+}

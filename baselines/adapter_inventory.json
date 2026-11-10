@@ -1,0 +1,57 @@
+[
+  {
+    "file": "baselines/classical/common.py",
+    "source_sha256": "b22e3c750acb5d4d6f9d3574a910abf1247eebb7c751f8b9645cdea0c72d28ed",
+    "adaptation": "portable asset paths; scientific computation retained"
+  },
+  {
+    "file": "baselines/classical/models.py",
+    "source_sha256": "028c562b7549a1e805dd4550d31bc6942886265b7daf972980eb28ff78add0d6",
+    "adaptation": "portable asset paths; scientific computation retained"
+  },
+  {
+    "file": "baselines/classical/prepare.py",
+    "source_sha256": "df5086a6620db742d0fb6a04d262ab91e16b5838b6c9c6c30792730d16fe00bc",
+    "adaptation": "portable asset paths; scientific computation retained"
+  },
+  {
+    "file": "baselines/classical/train.py",
+    "source_sha256": "21456370823923289cb5afd77db4084fe8e8d373c9f0ec52623733670eb1a010",
+    "adaptation": "portable asset paths; scientific computation retained"
+  },
+  {
+    "file": "baselines/state/common.py",
+    "source_sha256": "bd99f224745f7d852768a0d988f82bdedb5809c3b63e82bb5c60f88a55442f5a",
+    "adaptation": "portable asset paths; scientific computation retained"
+  },
+  {
+    "file": "baselines/state/native.py",
+    "source_sha256": "4fda2cab902fe5ef971f61b921ad8e8e3af46e5793ea232efa41224c8467e673",
+    "adaptation": "portable asset paths; scientific computation retained"
+  },
+  {
+    "file": "baselines/state/run.py",
+    "source_sha256": "0993bdcc3b8184b72a10b03466389e7774f374adf921c4a4055ffe40b90c6f10",
+    "adaptation": "portable asset paths; scientific computation retained"
+  },
+  {
+    "file": "baselines/summer/code/common.py",
+    "source_sha256": "f0893642e263d69189d24091187dd9e995a25fba7ea1cfa5fb50692a46fda948",
+    "adaptation": "portable asset paths; scientific computation retained"
+  },
+  {
+    "file": "baselines/summer/code/run.py",
+    "source_sha256": "6054a459773376153c81c9d7cff42abe0a770c7b5c73cebc1dd0dd435efad452",
+    "adaptation": "portable asset paths; scientific computation retained"
+  },
+  {
+    "file": "baselines/summer/code/fast_summer.py",
+    "source_sha256": "d25135881a349527c19a7b0bf058416664e6cf2137af8afd2af5be53425f322b",
+    "adaptation": "portable asset paths; scientific computation retained"
+  },
+  {
+    "file": "baselines/summer/code/gpu_admission.py",
+    "source_sha256": "f41e1c85350b5b97ca42205ceecc2261a84ff2702e6818fe3acd22f6a661910c",
+    "adaptation": "portable asset paths; scientific computation retained"
+  }
+]

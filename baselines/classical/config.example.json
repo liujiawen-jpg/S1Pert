@@ -1,0 +1,86 @@
+{
+  "protocol_version": "s1pert.classical.v1",
+  "root": "../../workspace/classical",
+  "python": null,
+  "a4_data": "../../workspace/a4/data",
+  "moments": "../../workspace/preprocessed",
+  "raw_root": "../../data/raw",
+  "metrics": "../../src/jev_a4/core/metrics.py",
+  "scgpt_source": "../../external/scGPT",
+  "scgpt_pretrained": "../../assets/scgpt",
+  "gene2go": "../../assets/baselines/gene2go_all.pkl",
+  "gpu_uuid": "0",
+  "cells": [
+    "hepg2",
+    "jurkat",
+    "rpe1",
+    "k562_essential"
+  ],
+  "seeds": [
+    17,
+    29,
+    43,
+    61,
+    89
+  ],
+  "methods": [
+    "genept_gene",
+    "genept_prot",
+    "gears",
+    "scgpt"
+  ],
+  "threads": 8,
+  "max_rss_gib": 24,
+  "min_epochs": 10,
+  "max_epochs": 100,
+  "patience": 10,
+  "min_delta": 0.0001,
+  "gat": {
+    "layers": 2,
+    "width": 128,
+    "ffn_width": 1024,
+    "batch": 8192,
+    "lr": 0.0001,
+    "weight_decay": 1e-06,
+    "dropout": 0.1
+  },
+  "genept": {
+    "C": [
+      0.01,
+      0.1,
+      1.0,
+      10.0
+    ],
+    "max_iter": 1000,
+    "tolerance": 0.0001
+  },
+  "gears": {
+    "batch": 32,
+    "lr": 0.001,
+    "hidden_size": 64,
+    "direction_lambda": 0.1,
+    "top_k": 20,
+    "correlation_threshold": 0.4
+  },
+  "scgpt": {
+    "batch": 64,
+    "lr": 0.0001,
+    "max_seq_len": 1536,
+    "dropout": 0.2
+  },
+  "native_evaluation_control_cells": 8,
+  "classification_conversion": "validation_only_global_asymmetric_thresholds_on_mean_log1p_CP10k_effect; not claimed to reproduce AROMA undisclosed adapter",
+  "knowledge_resources": {
+    "perturbqa_kg": {
+      "url": "https://zenodo.org/api/records/14915313/files/kg.zip/content",
+      "md5": "90977691ebac65e02765e34c31b66bd1"
+    },
+    "genept": {
+      "url": "https://zenodo.org/api/records/10833191/files/GenePT_emebdding_v2.zip/content",
+      "md5": "3f6ce4317e3a0091978ae5cb8fbf05a3"
+    }
+  },
+  "gears_source": "../../external/GEARS",
+  "perturbqa_source": "../../external/PerturbQA",
+  "assets_root": "../../assets/baselines"
+}

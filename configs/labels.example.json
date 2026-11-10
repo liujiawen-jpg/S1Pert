@@ -1,0 +1,6 @@
+{
+  "labels": {
+    "source": "../workspace/preprocessed",
+    "output": "../workspace/strict_labels"
+  }
+}

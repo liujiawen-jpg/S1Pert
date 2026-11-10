@@ -1,0 +1,211 @@
+{
+  "schema": "s1pert.public-assets.v1",
+  "root": "..",
+  "verified_on_utc": "2026-11-10",
+  "notes": [
+    "Data files are the four exact paper source filenames. No response labels, trained S1Pert weights, or historical prediction caches are downloaded.",
+    "GEO exposes exact file lengths but no independently published digest here. A receipt records local SHA256 and Last-Modified for each completed download.",
+    "The UniProt endpoint is a live reviewed-human annotation export, not a pinned historical snapshot. Its receipt records SHA256 and the response release identifier; exact historical text reproduction requires the original public annotation snapshot.",
+    "Hugging Face Git blob IDs are verified as SHA1('blob '+size+'\\0'+file_bytes); LFS files use their published SHA256. DECIDER is pinned to the public v1 commit, not changing main."
+  ],
+  "assets": [
+    {
+      "id": "hepg2",
+      "group": "data",
+      "path": "data/raw/Nadig2024_GSE264667_raw/GSE264667_hepg2_raw_singlecell_01.h5ad",
+      "url": "https://ftp.ncbi.nlm.nih.gov/geo/series/GSE264nnn/GSE264667/suppl/GSE264667_hepg2_raw_singlecell_01.h5ad",
+      "size_bytes": 5614460941,
+      "checksums": {},
+      "source_page": "https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE264667",
+      "license": "See GEO record and source publication; no SPDX identifier supplied by the record."
+    },
+    {
+      "id": "jurkat",
+      "group": "data",
+      "path": "data/raw/Nadig2024_GSE264667_raw/GSE264667_jurkat_raw_singlecell_01.h5ad",
+      "url": "https://ftp.ncbi.nlm.nih.gov/geo/series/GSE264nnn/GSE264667/suppl/GSE264667_jurkat_raw_singlecell_01.h5ad",
+      "size_bytes": 9366490264,
+      "checksums": {},
+      "source_page": "https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE264667",
+      "license": "See GEO record and source publication; no SPDX identifier supplied by the record."
+    },
+    {
+      "id": "rpe1",
+      "group": "data",
+      "path": "data/raw/scPerturb_prepro/ReplogleWeissman2022_rpe1.h5ad",
+      "url": "https://zenodo.org/api/records/13350497/files/ReplogleWeissman2022_rpe1.h5ad/content",
+      "size_bytes": 1236886900,
+      "checksums": {
+        "md5": "cc7f1ec50aeb3a3e1b4a6cfa713d80fa"
+      },
+      "source_page": "https://zenodo.org/records/13350497",
+      "license": "CC-BY-4.0"
+    },
+    {
+      "id": "k562_essential",
+      "group": "data",
+      "path": "data/raw/scPerturb_prepro/ReplogleWeissman2022_K562_essential.h5ad",
+      "url": "https://zenodo.org/api/records/13350497/files/ReplogleWeissman2022_K562_essential.h5ad/content",
+      "size_bytes": 1546729675,
+      "checksums": {
+        "md5": "d8cba17576d1a8afc0f7d71b79cad0f7"
+      },
+      "source_page": "https://zenodo.org/records/13350497",
+      "license": "CC-BY-4.0"
+    },
+    {
+      "id": "uniprot_reviewed_human",
+      "group": "annotations",
+      "path": "assets/uniprot_reviewed_human.tsv",
+      "url": "https://rest.uniprot.org/uniprotkb/stream?query=%28organism_id%3A9606%29%20AND%20%28reviewed%3Atrue%29&format=tsv&fields=accession%2Cgene_primary%2Cprotein_name%2Ccc_function",
+      "size_bytes": null,
+      "checksums": {},
+      "source_page": "https://www.uniprot.org/help/api_queries",
+      "license": "CC-BY-4.0",
+      "reproducibility": "Live public annotation export; archive the receipt and use the same snapshot for comparative runs."
+    },
+    {
+      "id": "decider_config_json",
+      "group": "backbone",
+      "path": "assets/DECIDER-4b-v1/config.json",
+      "url": "https://huggingface.co/Mapika/decider-4b/resolve/c23ab4d2483e7c6a93484463e9afe1688b29bedd/config.json",
+      "size_bytes": 1979,
+      "checksums": {
+        "git_sha1": "fb849c71825b3d42be90bc7a5a52438f9143118d"
+      },
+      "weights": false,
+      "source_page": "https://huggingface.co/Mapika/decider-4b/tree/c23ab4d2483e7c6a93484463e9afe1688b29bedd",
+      "license": "Apache-2.0"
+    },
+    {
+      "id": "decider_decider_config_json",
+      "group": "backbone",
+      "path": "assets/DECIDER-4b-v1/decider_config.json",
+      "url": "https://huggingface.co/Mapika/decider-4b/resolve/c23ab4d2483e7c6a93484463e9afe1688b29bedd/decider_config.json",
+      "size_bytes": 492,
+      "checksums": {
+        "git_sha1": "4622918d6fd2a4f17777ff61119f7bfb92b821c0"
+      },
+      "weights": false,
+      "source_page": "https://huggingface.co/Mapika/decider-4b/tree/c23ab4d2483e7c6a93484463e9afe1688b29bedd",
+      "license": "Apache-2.0"
+    },
+    {
+      "id": "decider_generation_config_json",
+      "group": "backbone",
+      "path": "assets/DECIDER-4b-v1/generation_config.json",
+      "url": "https://huggingface.co/Mapika/decider-4b/resolve/c23ab4d2483e7c6a93484463e9afe1688b29bedd/generation_config.json",
+      "size_bytes": 116,
+      "checksums": {
+        "git_sha1": "31ec2a53cc9cde720b0a8fbc68b9c4e73ac5a18f"
+      },
+      "weights": false,
+      "source_page": "https://huggingface.co/Mapika/decider-4b/tree/c23ab4d2483e7c6a93484463e9afe1688b29bedd",
+      "license": "Apache-2.0"
+    },
+    {
+      "id": "decider_chat_template_jinja",
+      "group": "backbone",
+      "path": "assets/DECIDER-4b-v1/chat_template.jinja",
+      "url": "https://huggingface.co/Mapika/decider-4b/resolve/c23ab4d2483e7c6a93484463e9afe1688b29bedd/chat_template.jinja",
+      "size_bytes": 7756,
+      "checksums": {
+        "git_sha1": "a585dec894e63da457d9440ec6aa7caa16d20860"
+      },
+      "weights": false,
+      "source_page": "https://huggingface.co/Mapika/decider-4b/tree/c23ab4d2483e7c6a93484463e9afe1688b29bedd",
+      "license": "Apache-2.0"
+    },
+    {
+      "id": "decider_tokenizer_config_json",
+      "group": "backbone",
+      "path": "assets/DECIDER-4b-v1/tokenizer_config.json",
+      "url": "https://huggingface.co/Mapika/decider-4b/resolve/c23ab4d2483e7c6a93484463e9afe1688b29bedd/tokenizer_config.json",
+      "size_bytes": 1126,
+      "checksums": {
+        "git_sha1": "d6b53ef32096233f2f5f60477e1fb1eea02897d1"
+      },
+      "weights": false,
+      "source_page": "https://huggingface.co/Mapika/decider-4b/tree/c23ab4d2483e7c6a93484463e9afe1688b29bedd",
+      "license": "Apache-2.0"
+    },
+    {
+      "id": "decider_tokenizer_json",
+      "group": "backbone",
+      "path": "assets/DECIDER-4b-v1/tokenizer.json",
+      "url": "https://huggingface.co/Mapika/decider-4b/resolve/c23ab4d2483e7c6a93484463e9afe1688b29bedd/tokenizer.json",
+      "size_bytes": 19989325,
+      "checksums": {
+        "sha256": "06b9509352d2af50381ab2247e083b80d32d5c0aba91c272ca9ff729b6a0e523"
+      },
+      "weights": false,
+      "source_page": "https://huggingface.co/Mapika/decider-4b/tree/c23ab4d2483e7c6a93484463e9afe1688b29bedd",
+      "license": "Apache-2.0"
+    },
+    {
+      "id": "decider_decider___init___py",
+      "group": "backbone",
+      "path": "assets/DECIDER-4b-v1/decider/__init__.py",
+      "url": "https://huggingface.co/Mapika/decider-4b/resolve/c23ab4d2483e7c6a93484463e9afe1688b29bedd/decider/__init__.py",
+      "size_bytes": 0,
+      "checksums": {
+        "git_sha1": "e69de29bb2d1d6434b8b29ae775ad8c2e48c5391"
+      },
+      "weights": false,
+      "source_page": "https://huggingface.co/Mapika/decider-4b/tree/c23ab4d2483e7c6a93484463e9afe1688b29bedd",
+      "license": "Apache-2.0"
+    },
+    {
+      "id": "decider_decider_model_py",
+      "group": "backbone",
+      "path": "assets/DECIDER-4b-v1/decider/model.py",
+      "url": "https://huggingface.co/Mapika/decider-4b/resolve/c23ab4d2483e7c6a93484463e9afe1688b29bedd/decider/model.py",
+      "size_bytes": 2610,
+      "checksums": {
+        "git_sha1": "c42c4994a930a94ed5c50dd0983ecdc60c40f722"
+      },
+      "weights": false,
+      "source_page": "https://huggingface.co/Mapika/decider-4b/tree/c23ab4d2483e7c6a93484463e9afe1688b29bedd",
+      "license": "Apache-2.0"
+    },
+    {
+      "id": "decider_decider_prompt_py",
+      "group": "backbone",
+      "path": "assets/DECIDER-4b-v1/decider/prompt.py",
+      "url": "https://huggingface.co/Mapika/decider-4b/resolve/c23ab4d2483e7c6a93484463e9afe1688b29bedd/decider/prompt.py",
+      "size_bytes": 7649,
+      "checksums": {
+        "git_sha1": "fb9f1306fa7c5b710a00daf4093ab4fb5501d62f"
+      },
+      "weights": false,
+      "source_page": "https://huggingface.co/Mapika/decider-4b/tree/c23ab4d2483e7c6a93484463e9afe1688b29bedd",
+      "license": "Apache-2.0"
+    },
+    {
+      "id": "decider_README_md",
+      "group": "backbone",
+      "path": "assets/DECIDER-4b-v1/README.md",
+      "url": "https://huggingface.co/Mapika/decider-4b/resolve/c23ab4d2483e7c6a93484463e9afe1688b29bedd/README.md",
+      "size_bytes": 27486,
+      "checksums": {
+        "git_sha1": "7d26d470d151ac3ddee6415d65d7d95f4d6a4e7a"
+      },
+      "weights": false,
+      "source_page": "https://huggingface.co/Mapika/decider-4b/tree/c23ab4d2483e7c6a93484463e9afe1688b29bedd",
+      "license": "Apache-2.0"
+    },
+    {
+      "id": "decider_model_safetensors",
+      "group": "backbone",
+      "path": "assets/DECIDER-4b-v1/model.safetensors",
+      "url": "https://huggingface.co/Mapika/decider-4b/resolve/c23ab4d2483e7c6a93484463e9afe1688b29bedd/model.safetensors",
+      "size_bytes": 8411558400,
+      "checksums": {
+        "sha256": "50b88d1ede147c96d2a2e0edabe5807aede7a8ea913577d006c438a5253b17fd"
+      },
+      "weights": true,
+      "source_page": "https://huggingface.co/Mapika/decider-4b/tree/c23ab4d2483e7c6a93484463e9afe1688b29bedd",
+      "license": "Apache-2.0"
+    }
+  ]
+}

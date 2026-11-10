@@ -1,0 +1,31 @@
+{
+  "schema": "s1pert.source_inventory.v1",
+  "provenance_policy": "Anonymized local implementation; third-party resources are obtained separately.",
+  "scientific_fidelity": "A4 model, statistical labels, fixed RNG salt, splits and losses retained; path portability and validation fixes documented.",
+  "components": [
+    {
+      "release_path": "src/jev_a4/core",
+      "classification": "supplied_local_research_implementation_adapted_for_portability",
+      "license_status": "not_declared_in_supplied_source"
+    },
+    {
+      "release_path": "src/jev_a4/core/train_memory_safe.py",
+      "classification": "local_execution_overlay",
+      "license_status": "not_declared_in_supplied_source"
+    },
+    {
+      "release_path": "src/jev_a4/data",
+      "classification": "local_preprocessing_implementation_adapted_for_portability",
+      "license_status": "not_declared_in_supplied_source"
+    },
+    {
+      "release_path": "src/jev_a4/labels",
+      "classification": "local_statistical_label_implementation",
+      "license_status": "not_declared_in_supplied_source"
+    },
+    {
+      "classification": "adapted_handoff_tests_and_new_release_packaging",
+      "license_status": "no_new_project_license_assigned"
+    }
+  ]
+}

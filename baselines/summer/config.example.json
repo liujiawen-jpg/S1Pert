@@ -1,0 +1,50 @@
+{
+  "schema": "summer.vllm.a4_matched.v1",
+  "a4_root": "../../workspace/a4",
+  "knowledge_db": "../../assets/public_functions.sqlite",
+  "public_edges_db": "../../assets/public_edges.sqlite",
+  "model": "../../assets/qwen3_8b",
+  "cells": [
+    "hepg2",
+    "jurkat",
+    "rpe1",
+    "k562_essential"
+  ],
+  "seeds": [
+    17,
+    29,
+    43,
+    61,
+    89
+  ],
+  "gpu_uuid": "0",
+  "max_gpu_gib": 72,
+  "max_rss_gib": 16,
+  "max_cache_gib": 20,
+  "max_input_tokens": 2048,
+  "answer_tokens": 128,
+  "summary_tokens": 80,
+  "generation_batch": 1024,
+  "engine_max_num_seqs": 256,
+  "engine_max_num_batched_tokens": 8192,
+  "summer": {
+    "name": "SUMMER-Qwen3-8B-adapted",
+    "retrieval_budget": 4,
+    "close_neighbors": 16,
+    "training": false,
+    "adaptation": "Generic local Qwen3-8B, unchanged direct three-class rationale-first prompt, public summaries and official SUMMER retrieval priorities; vLLM BF16 continuous batching, paged KV cache and prefix caching; no fine-tuning or test tuning."
+  },
+  "prediction": {
+    "direct": true,
+    "old_task_weights": false,
+    "old_model_prediction_input": false,
+    "residual_correction": false
+  },
+  "evaluation": {
+    "split": "sealed target-level 7:1:2",
+    "seeds_are_repeated_holdouts_not_folds": true,
+    "full_test": true
+  },
+  "a4_metrics": "../../src/jev_a4/core/metrics.py",
+  "perturbqa_source": "../../external/PerturbQA"
+}

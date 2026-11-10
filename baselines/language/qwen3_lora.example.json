@@ -1,0 +1,6 @@
+{
+  "data_root": "../../workspace/a4/data",
+  "backbone_snapshot": "../../assets/Qwen3-4B",
+  "knowledge_graph": "../../assets/public_edges.parquet",
+  "output_root": "../../workspace/baselines/qwen3_lora"
+}
