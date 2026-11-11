@@ -1,19 +1,10 @@
 # Data preparation and strict response labels
 
-The portable path is public download → raw H5AD → factorized moments and
-statistical calls → explicit strict-label bundle → independent S1Pert/A4
-preparation for each cell line. Public function text and a frozen DECIDER v1
-snapshot enter separately at representation encoding.
-It never loads historical predictions or task-trained weights. The statistical
-label code is packaged locally; no external source directory is imported.
+The portable pipeline runs in this order: public download → raw H5AD → factorized moments and statistical calls → explicit strict-label bundle → independent S1Pert/A4 preparation for each cell line. Representation encoding separately loads public function text and a frozen DECIDER v1 snapshot. The pipeline never loads historical predictions or task-trained weights. Statistical label code is packaged locally and does not import an external source directory.
 
 ## Verified public sources
 
-The release manifest, `configs/downloads.json`, records the public URLs,
-published checksums where available, expected sizes, and destination paths.
-The sources were checked on 2026-11-10 using directory listings, repository
-metadata, and HTTP headers. No full source matrix or pretrained weights were
-downloaded during release validation.
+The release manifest at `configs/downloads.json` records public URLs, available publisher checksums, expected sizes and destination paths. Source verification on 2026-11-10 used directory listings, repository metadata and HTTP headers. Release validation did not download a complete source matrix or any pretrained weights.
 
 | Input | Public source | Verification |
 |---|---|---|
@@ -24,49 +15,23 @@ downloaded during release validation.
 | Public gene functions | [UniProt API](https://www.uniprot.org/help/api_queries) | Reviewed human entries, accession/primary gene/protein name/function fields |
 | Frozen encoder | [Mapika/decider-4b v1](https://huggingface.co/Mapika/decider-4b/tree/c23ab4d2483e7c6a93484463e9afe1688b29bedd) | Immutable commit `c23ab4d2483e7c6a93484463e9afe1688b29bedd`, weight SHA256 matches configuration |
 
-The two GEO originals match the source sizes used by the paper. The similarly
-named Nadig files in Arc Institute's Hugging Face mirror have different bytes
-and sizes; the manifest therefore uses GEO. K562 genome-wide and normalized
-Replogle files are different inputs and must not replace the listed files.
-All four matrices total about 17.8 GB before derived stores and caches.
+The two GEO originals match the source sizes used by the paper. Similarly named Nadig files in the Arc Institute Hugging Face mirror differ in bytes and size, so the manifest uses GEO. K562 genome-wide and normalized Replogle files are separate inputs and cannot replace the listed files. The four matrices total about 17.8 GB before creation of derived stores and caches.
 
-The downloader has no third-party dependencies. It requires explicit selection,
-downloads into `.part` files, validates sizes and every supplied checksum, and
-publishes complete files atomically without replacing an existing destination.
-Interrupted downloads can resume only when their source identity and HTTP range
-response agree. A changed server validator or an ignored range causes a stop.
-Each completed file has a `.download.json` receipt with local SHA256, retrieval
-time, and server metadata. Existing files are checked again before reuse.
-Without a published digest, the receipt checks subsequent local consistency;
-it does not establish independent publisher authentication. GEO does not expose
-a checksum in the verified listing. Zenodo supplies MD5; Hugging Face supplies
-Git blob SHA1 for small files and SHA256 for large files.
+The downloader has no third-party dependencies. Every download requires explicit selection. Data is first written to a `.part` file. The downloader validates the expected size and every supplied checksum, then publishes the completed file atomically. It never replaces an existing destination.
 
-The UniProt export is live: a new download can contain newer annotations than
-the paper. Save its receipt and use the same export across comparative runs.
-Exact historical text reproduction requires the original public annotation
-snapshot; the release does not claim that the live export recreates its bytes.
-The importer accepts UniProt's actual TSV headers, uses primary gene symbols,
-omits entries with no primary symbol, and keeps public function text only.
-The configured SQLite file is built locally from this TSV.
+An interrupted download resumes only if the source identity and HTTP range response still match. A changed server validator or ignored range stops the download. Each completed file receives a `.download.json` receipt with its local SHA256, retrieval time and server metadata. Existing files are validated again before reuse.
 
-If a host is unavailable, obtain the exact named file from its linked record and
-verify its size/checksum before using it at the configured path. No substitute
-dataset is selected automatically. A manually supplied GEO file lacks a downloader
-receipt and will not be silently adopted by the downloader; after independent
-verification it can be passed directly to preprocessing. For a stale `.lock`
-left by a terminated process, first establish that no downloader is running,
-then remove only that file. Preserve mismatched files for inspection and choose
-a fresh destination or resolve the source mismatch explicitly.
+When no publisher digest is available, the receipt verifies later local consistency but does not provide independent publisher authentication. The verified GEO listing does not expose a checksum. Zenodo provides MD5. Hugging Face provides Git blob SHA1 for small files and SHA256 for large files.
+
+The UniProt export is live, so a new download can contain annotations newer than the paper. Save the receipt and reuse the same export across comparative runs. Exact historical text reproduction requires the original public annotation snapshot. The release does not claim byte-level reproduction from a live export. The importer accepts the current UniProt TSV headers, uses primary gene symbols, omits entries without a primary symbol and retains only public function text. It builds the configured SQLite file locally from the TSV.
+
+If a host is unavailable, obtain the exact named file from its linked record. Verify its size and checksum before placing it at the configured path. The pipeline does not select a substitute dataset automatically. A manually supplied GEO file has no downloader receipt, so the downloader will not adopt it silently. After independent verification, pass the file directly to preprocessing.
+
+Before removing a stale `.lock` from a terminated process, confirm that no downloader is running. Remove only the stale lock file. Preserve mismatched files for inspection. Use a fresh destination or resolve the source mismatch explicitly.
 
 ## Commands
 
-Install the package and its data dependencies as described in the README.
-Run these commands from the repository root. The example download destinations
-already agree with the preprocessing, label, and A4 configurations. Paths inside a
-configuration are relative to that JSON file, not the current working directory.
-Environment variables in configured paths are expanded; unset variables fail.
-Explicit command-line paths are relative to the current working directory.
+Install the package and data dependencies as described in the README, then run the following commands from the repository root. The example download destinations match the preprocessing, label and A4 configurations. Paths in a configuration file are resolved relative to that JSON file, not the current working directory. Configured paths expand environment variables and fail on unset variables. Explicit command-line paths are resolved relative to the current working directory.
 
 ```bash
 python scripts/download_assets.py --list
@@ -87,21 +52,11 @@ python scripts/download_assets.py --group backbone --dry-run
 python scripts/download_assets.py --group backbone --include-weights
 ```
 
-`--list` and `--dry-run` are offline and create no directories. `--group` and
-`--asset` are repeatable. `--root` changes the asset destination root only;
-update downstream configuration paths if using it. Weights are never fetched
-without `--include-weights`. No downloader command starts training. The downloaded
-snapshot includes the exact `decider/model.py`, `decider/prompt.py`, package
-initializer, tokenizer, and configurations required by the frozen loader;
-`decider_source`, `tokenizer_snapshot`, and `decider_snapshot` point to that
-same `assets/DECIDER-4b-v1` directory.
+`--list` and `--dry-run` work offline and create no directories. Both `--group` and `--asset` can be repeated. `--root` changes only the asset destination root. Update downstream configuration paths after changing it. The downloader never fetches weights without `--include-weights`, and no download command starts training.
 
-Repeat `prepare` with each remaining dataset name, or use the four-dataset
-pipeline documented in the README. Its encoding/training stages consume
-`workspace/a4/data/<dataset>`, `assets/public_functions.sqlite`, and the frozen
-encoder snapshot. GPU dependencies and runtime checks are described in the
-README; CPU preprocessing and strict-label validation can run before acquiring
-weights. S1Pert task-specific parameters are initialized independently.
+The downloaded snapshot contains the exact `decider/model.py`, `decider/prompt.py`, package initializer, tokenizer and configurations required by the frozen loader. `decider_source`, `tokenizer_snapshot`, and `decider_snapshot` all point to the same `assets/DECIDER-4b-v1` directory.
+
+Repeat `prepare` for each remaining dataset, or use the four-dataset pipeline from the README. Encoding and training consume `workspace/a4/data/<dataset>`, `assets/public_functions.sqlite`, and the frozen encoder snapshot. The README describes GPU dependencies and runtime checks. CPU preprocessing and strict-label validation can run before acquisition of the weights. S1Pert task-specific parameters are initialized independently.
 
 The equivalent module entrypoints are:
 
@@ -112,15 +67,9 @@ python -m jev_a4.labels.validate_resolution_bundle --source workspace/preprocess
 python -m jev_a4.core.prepare --config configs/a4.example.json --dataset hepg2 --out workspace/a4/data/hepg2
 ```
 
-The source files also retain direct script entrypoints. For example,
-`python src/jev_a4/core/prepare.py --config ... --dataset ... --out ...` works
-from a source checkout with the declared dependencies installed.
+The source files also provide direct script entry points. For example, run `python src/jev_a4/core/prepare.py --config ... --dataset ... --out ...` from a source checkout with the declared dependencies installed.
 
-Preprocessing accepts `--output` to override its configured destination. Label
-building accepts `--source` and `--output` overrides, or a configuration with
-`labels.source` and `labels.output`. Neither stage overwrites an existing output
-directory. A failed preprocessing directory retains `status.json: FAILED` for
-inspection and is rejected by the label builder. Use a new destination to retry.
+Use `--output` to override the configured preprocessing destination. Label building accepts `--source` and `--output` overrides, or a configuration containing `labels.source` and `labels.output`. Neither stage overwrites an existing output directory. A failed preprocessing directory retains `status.json: FAILED` for inspection. The label builder rejects that directory. Use a new destination for the retry.
 
 ## Input configuration
 
@@ -133,109 +82,50 @@ inspection and is rejected by the label builder. Use a new destination to retry.
 | `rpe1` | `replogle` | Replogle RPE1 H5AD containing original counts |
 | `k562_essential` | `replogle` | Replogle K562 essential H5AD containing original counts |
 
-Each dataset entry requires `kind` and `raw`. A dataset name must be a single
-directory name. `preprocess.output` is the new factorized root;
-`preprocess.block_cells` defaults to 256 and must be between 1 and 1024.
-This controls the Nadig row block only; it is not a cap on cells or genes.
+Each dataset entry requires `kind` and `raw`. The dataset name must be a single directory name. `preprocess.output` defines the new factorized root. `preprocess.block_cells` defaults to 256 and accepts values from 1 through 1024. This setting controls only the Nadig row block. It does not limit the number of cells or genes.
 
-Supply both Nadig inputs together to preserve the historical metadata-only
-cross-source missing-ID resolution. Their expression values and response labels
-are never shared as A4 inputs. A single supplied source is supported, but may
-have fewer metadata aliases available and should not be claimed to reproduce
-the historical two-source identity mapping automatically.
+Supply both Nadig inputs to preserve the historical metadata-only, cross-source resolution of missing IDs. Their expression values and response labels are never shared as A4 inputs. A single source is supported but can provide fewer metadata aliases. It does not automatically reproduce the historical two-source identity mapping.
 
-The A4 preparation configuration requires `data_preprocessed_root` and
-`label_resolution_root`. Optional `raw_h5ad_paths: {dataset: path}` provides
-relocated source annotation files for repairing numeric/missing symbols in
-legacy preprocessed stores. A freshly built portable store already contains
-decoded symbols and does not need these files for preparation.
+The A4 preparation configuration requires `data_preprocessed_root` and `label_resolution_root`. The optional `raw_h5ad_paths: {dataset: path}` field provides relocated source annotation files for repair of numeric or missing symbols in legacy preprocessed stores. A newly built portable store already contains decoded symbols and does not need these files during preparation.
 
 ## Raw H5AD contract
 
-For Nadig and Replogle, `X` must be a dense HDF5 dataset with shape
-`cells × measured genes`, containing finite nonnegative integer counts. Sparse
-H5AD encodings and log-normalized `X` are not accepted by these adapters.
-There is no implicit conversion during preprocessing. Every cell's measured count sum
-must not exceed its original positive, finite UMI denominator.
+For Nadig and Replogle, `X` must be a dense HDF5 dataset with shape `cells × measured genes`. It must contain finite, nonnegative integer counts. These adapters reject sparse H5AD encodings and log-normalized `X`. Preprocessing does not perform an implicit conversion. The measured count sum for each cell must not exceed its original positive, finite UMI denominator.
 
 | Source | Required `obs` columns | Required `var` columns |
 |---|---|---|
 | Nadig | `gene`, `gene_id`, unique `cell_barcode`, numeric `UMI_count` | unique `gene_id`, `gene_name` |
 | Replogle | `perturbation`, numeric `UMI_count` or `UMI count` | unique `ensembl_id`, `gene_name` |
 
-String annotations support plain strings, current `categories/codes` groups,
-legacy HDF5 category references, and legacy `__categories` tables. Category
-codes are validated; missing categorical values decode to the empty string.
+String annotations can use plain strings, current `categories/codes` groups, legacy HDF5 category references, or legacy `__categories` tables. Category codes are validated. Missing categorical values decode to the empty string.
 
-Nadig controls must have both name and identity `non-targeting`. At least 20
-controls are required. Explicit target IDs are retained; missing IDs use a unique
-measured gene-symbol match or the namespace `SYMBOL:<name>`. Unique matching
-target metadata across the supplied Nadig sources may resolve that namespace.
-Ambiguous cross-source identity matches fail. Multi-target identifiers containing
-`+`, `,`, `;`, or `|` are rejected. All declared cells and measured gene columns
-are retained. Targets with fewer than 20 cells remain on the target axis and
-receive unresolved labels.
+Nadig controls must use `non-targeting` as both name and identity. At least 20 controls are required. Explicit target IDs are retained. A missing ID uses either a unique measured gene-symbol match or the `SYMBOL:<name>` namespace. Matching target metadata across the supplied Nadig sources can resolve this namespace when the match is unique. Ambiguous cross-source identity matches fail.
 
-Replogle controls are the original adapter's metadata values `control`,
-`non-targeting`, or an empty perturbation annotation. This rule is source-specific
-and should be audited before applying the adapter to another dataset. Only
-perturbations whose symbols match exactly one measured gene ID are retained as
-targets. Excluded symbols and the number of excluded cells are recorded. No
-measured query gene is filtered out.
+Multi-target identifiers containing `+`, `,`, `;`, or `|` are rejected. All declared cells and measured gene columns are retained. Targets with fewer than 20 cells remain on the target axis and receive unresolved labels.
 
-An optional `kind: adamson_audit` entry performs the original Adamson metadata
-audit only. It expects `obs.perturbation` with encoded missing categories,
-`obs.nperts`, `obs.UMI count`, `var.gene_symbol`, and `var.ensembl_id`. It produces
-`AUDITED_NOT_INCLUDED`, never A4 training data or strict labels. It is not part of
-the default four-source example.
+Replogle controls use the original adapter metadata values `control`, `non-targeting`, or an empty perturbation annotation. This rule is source-specific. Audit it before applying the adapter to another dataset. A perturbation is retained as a target only if its symbol matches exactly one measured gene ID. The pipeline records excluded symbols and the number of excluded cells. It does not filter any measured query gene.
+
+An optional `kind: adamson_audit` entry runs only the original Adamson metadata audit. It expects `obs.perturbation` with encoded missing categories, `obs.nperts`, `obs.UMI count`, `var.gene_symbol`, and `var.ensembl_id`. Its output is `AUDITED_NOT_INCLUDED`, never A4 training data or strict labels. The default four-source example does not include this entry.
 
 ## Moments and statistical labels
 
-For each cell, linear normalized expression is `y = X / original_UMI × 10000`.
-This is not log-normalization. Group means, sample variances (`ddof=1`), and
-nonzero-cell counts are calculated for pooled controls and every retained
-perturbation. Nadig uses the original float64 row-block grouped reductions;
-Replogle retains the original HDF5 chunk-based column/row reduction. Output means
-and variances are float32 and nonzero counts are int32; statistical tests cast
-the stored moments back to float64, matching the historical preprocessing path.
+Each cell uses the linear normalization `y = X / original_UMI × 10000`. This is not log-normalization. The pipeline calculates group means, sample variances (`ddof=1`) and nonzero-cell counts for pooled controls and every retained perturbation. Nadig uses the original float64 grouped reductions over row blocks. Replogle retains the original HDF5 chunk-based column and row reduction. Output means and variances use float32. Nonzero counts use int32. Statistical tests cast the stored moments back to float64 to match the historical preprocessing path.
 
-Nadig reads `X` sequentially once. Its group accumulators occupy `O(targets ×
-genes)` memory and can require several GB. Row blocking does not make these
-accumulators constant-memory. Replogle accumulates a query-column block at a
-time and writes memory-mapped arrays. Neither adapter reads the entire raw
-cell-by-gene matrix into memory.
+Nadig reads `X` sequentially once. Its group accumulators use `O(targets × genes)` memory and can require several GB. Row blocking does not make the accumulator memory constant. Replogle processes one query-column block at a time and writes memory-mapped arrays. Neither adapter loads the entire raw cell-by-gene matrix into memory.
 
 The packaged `labels/label_core.py` retains the original tests:
 
 1. Ratio margin `r=1.2`, significance threshold `alpha=0.05`.
-2. Up tests `E[y_t] > r E[y_c]`; Down tests
-   `E[y_t] < E[y_c] / r` using scaled one-sided Welch tests.
-3. Same requires both one-sided equivalence tests (TOST), with
-   `p_same = max(p_lower, p_upper)` and a point estimate strictly inside the band.
-4. Benjamini–Hochberg correction is applied jointly to all three claims for all
-   measured genes in a condition (`3G` hypotheses). Untestable hypotheses enter
-   this family as `p=1`.
-5. Both groups need at least 20 cells and at least 10 nonzero cells per gene;
-   means must be positive and both scaled Welch variances estimable.
+2. Up tests use `E[y_t] > r E[y_c]`. Down tests use `E[y_t] < E[y_c] / r`. Both use scaled one-sided Welch tests.
+3. Same requires both one-sided equivalence tests (TOST), with `p_same = max(p_lower, p_upper)` and a point estimate strictly inside the band.
+4. Benjamini–Hochberg correction is applied jointly to all three claims for all measured genes in a condition (`3G` hypotheses). Untestable hypotheses enter this family as `p=1`.
+5. Both groups need at least 20 cells and at least 10 nonzero cells per gene. Means must be positive, and both scaled Welch variances must be estimable.
 
-Non-significance is never converted to Same. The source label array uses
-Up=0, Same=1, Down=2, unresolved=-1. Reasons are: 1 insufficient cells,
-2 low effective sample support, 3 zero/nonestimable mean, 4 degenerate variance,
-5 insufficient margin evidence; reason 0 means a resolved strict call.
+Non-significance is never converted to Same. The source label array uses Up=0, Same=1, Down=2, and unresolved=-1. Reason 1 means insufficient cells. Reason 2 means low effective sample support. Reason 3 means a zero or nonestimable mean. Reason 4 means degenerate variance. Reason 5 means insufficient margin evidence. Reason 0 marks a resolved strict call.
 
-The strict-label stage preserves these calls and changes only the unresolved
-storage convention to `hard_label=-100`, with `supervision_mask=False`.
-`resolution_code` stores classes 0–2 and unresolved reasons 3–7.
-`point_effect_region` describes the observed log2 fold-change region; it must
-never be used as substitute supervision. All unresolved cases remain missing
-labels, not a fourth prediction class. The builder records SHA256 provenance
-and seals its output; the independent validator checks content and seals.
+The strict-label stage preserves these calls and changes only the unresolved storage convention to `hard_label=-100`, with `supervision_mask=False`. `resolution_code` stores classes 0–2 and unresolved reasons 3–7. `point_effect_region` describes the observed log2 fold-change region. It must never serve as substitute supervision. Every unresolved case remains a missing label, not a fourth prediction class. The builder records SHA256 provenance and seals its output. The independent validator checks both the content and seals.
 
-The pooled-cell Welch/TOST labels are approximations. They do not perform
-independent biological-replicate inference, fit a negative-binomial model, or
-establish a universal false-discovery guarantee under correlated cells. Strict
-label coverage can differ substantially by target and query gene. Performance
-on resolved pairs is conditional on that resolution process.
+The pooled-cell Welch/TOST labels are approximations. They do not perform inference over independent biological replicates, fit a negative-binomial model, or establish a universal false-discovery guarantee under correlated cells. Strict-label coverage can differ substantially across target and query genes. Performance on resolved pairs is conditional on the resolution process.
 
 ## Factorized output schema
 
@@ -250,58 +140,22 @@ Each dataset directory contains:
 | `labels.npy`, `reason_codes.npy`, `effect_log2fc.npy`, `q_best.npy` | `(targets, genes)` |
 | `manifest.json` | source identity, normalization, rules, counts, exclusions |
 
-The `split` column of `groups.parquet` is retained historical 70/15/15 hash
-metadata. It is not an A4 partition and is never consulted by A4 preparation.
+The `split` column in `groups.parquet` retains the historical 70/15/15 hash metadata. It is not an A4 partition, and A4 preparation never reads it.
 
 ## A4 target splits and legal model inputs
 
-A4 splits the complete canonical target axis independently within each cell
-line, before label filtering. It sorts stable identities, uses a seeded NumPy
-permutation, and assigns `floor(0.7N)` TRAIN, `floor(0.1N)` VAL, and the remainder
-TEST. Default seeds are **17, 29, 43, 61, 89**; the protocol requires five distinct
-seeds. Targets with zero strict downstream labels remain in this split axis.
-Ambiguous identities and two source targets mapping to one canonical identity
-fail rather than being silently divided across partitions.
+A4 splits the complete canonical target axis independently for each cell line before label filtering. It sorts stable identities, applies a seeded NumPy permutation, and assigns `floor(0.7N)` targets to TRAIN and `floor(0.1N)` to VAL. The remaining targets go to TEST. Default seeds are **17, 29, 43, 61, 89**. The protocol requires five distinct seeds. Targets with no strict downstream labels remain on the split axis. Ambiguous identities fail. Two source targets mapped to one canonical identity also fail instead of being split silently across partitions.
 
-Only resolved downstream target–query pairs become records. Measured self-pairs
-are excluded by the default paper configuration and saved separately. Query
-numeric features are `log1p(control mean)`, `log1p(control variance)`, control
-detection fraction, and measurement availability. Target numeric features use
-the target gene's same control row if measurable. Perturbation means and
-variances never become A4 covariates; measured controls provide biological
-background only.
+Only resolved downstream target–query pairs become records. The default paper configuration excludes measured self-pairs and saves them separately. Query numeric features are `log1p(control mean)`, `log1p(control variance)`, control detection fraction and measurement availability. Target numeric features use the same control row for the target gene when the gene is measurable. Perturbation means and variances never become A4 covariates. Measured controls provide only the biological background.
 
-Response-tendency features use strict TRAIN labels from the same cell line.
-TRAIN targets are assigned five folds; a TRAIN record excludes its entire
-target fold from label counts. VAL/TEST records use all TRAIN counts. Query
-counts receive Laplace smoothing with alpha=1. If query support is zero, only
-the eligible same-cell TRAIN class counts provide fallback features. These are
-inputs to the newly trained model, not a prediction added to its output.
-Held-out labels are used solely for evaluation records. Preparation independently
-replays fold exclusion and verifies that changing held-out label values does not
-change input features. It also seals source identities and generated artifacts.
+Response-tendency features use strict TRAIN labels from the same cell line. TRAIN targets are assigned to five folds. A TRAIN record excludes its entire target fold from the label counts. VAL and TEST records use all TRAIN counts. Query counts use Laplace smoothing with alpha=1. When query support is zero, eligible same-cell TRAIN class counts provide the only fallback features. These values are inputs to the newly trained model, not predictions added to its output.
+
+Held-out labels are used only in evaluation records. Preparation independently replays fold exclusion and verifies that changes to held-out label values do not alter input features. It also seals source identities and generated artifacts.
 
 ## Provenance and validation boundary
 
-The small `data/nadig_moments.py` adapter preserves the paper's `inventory` and
-`aggregate_moments` metadata and moment-aggregation rules. Only metadata
-identity resolution and raw-count moments are reused;
-old fitted priors, predictions, null-calibration outputs, and model code are not
-part of this adapter. H5AD string decoding uses the packaged corrected decoder.
-The release computes fresh raw moments and no longer requires an opaque old
-moment cache. Existing audited factorized stores can instead enter directly at
-the strict-label stage.
+The small `data/nadig_moments.py` adapter preserves the paper's `inventory` and `aggregate_moments` metadata and moment-aggregation rules. It reuses only metadata identity resolution and raw-count moments. Old fitted priors, predictions, null-calibration outputs and model code are not part of this adapter. H5AD string decoding uses the packaged corrected decoder. The release computes fresh raw moments and no longer requires the opaque legacy moment cache. Existing audited factorized stores can instead enter directly at the strict-label stage.
 
-Tests cover small synthetic Nadig and Replogle H5AD inputs, agreement with direct
-normalized means and sample variances, count-contract rejection, strict TOST
-semantics, unresolved mapping, label-bundle validation, five whole-target splits,
-and TRAIN-only cross-fit leakage guards. No production matrix, pretrained weight,
-training run, or real-data score is exercised by these tests. Reproduction of
-historical large-data results still requires a full run using the original
-source files and the recorded protocol. Floating-point reduction order, row
-block size, and corrected legacy metadata decoding can affect exact bytes and
-borderline calls; identical scientific formulas alone do not certify identical
-historical artifacts.
+Tests cover small synthetic Nadig and Replogle H5AD inputs, agreement with direct normalized means and sample variances, count-contract rejection, strict TOST semantics, unresolved mapping, label-bundle validation, five whole-target splits, and TRAIN-only cross-fit leakage guards. These tests do not exercise a production matrix, pretrained weight, training run, or real-data score. Reproducing historical large-data results still requires a complete run with the original source files and recorded protocol. Floating-point reduction order, row-block size and corrected legacy metadata decoding can affect exact bytes and borderline calls. Matching scientific formulas alone does not certify byte-identical historical artifacts.
 
-中文提醒：旧预测、旧任务权重、固定来源均值预测均不接入本流程；实测 control 仅作
-合法背景输入。未解析标签不等于 Same，原始 `groups.parquet` 的旧划分也不是 A4 划分。
+中文提醒：旧预测、旧任务权重、固定来源均值预测均不接入本流程。实测 control 仅作合法背景输入。未解析标签不等于 Same，原始 `groups.parquet` 的旧划分也不是 A4 划分。
