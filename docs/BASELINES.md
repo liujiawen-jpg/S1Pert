@@ -14,30 +14,34 @@ inputs, losses and budgets that actually distinguish the methods.
 | STATE | Official StateTransition model and energy loss, strict-query adapter | Pinned STATE source, public ESM2 vectors, legal expression |
 | SUMMER | Official retrieval-priority helper + local Qwen3-8B prompting, vLLM | PerturbQA source, public functions/edges, generic Qwen3-8B |
 | Qwen3-4B-LoRA | Original local discriminative LoRA comparator | Generic Qwen3-4B, public graph |
-| ALIGNED | Existing exported predictions can use the common evaluator | Exact historical training adapter unavailable; see `baselines/aligned/` |
+| ALIGNED | Actual six-stage MLP/REINFORCE/two-round knowledge-refinement adapter | Public signed graph, direct GO annotations; required official core is bundled at its verified commit |
 
-Only local task adapters are distributed. External source is acquired separately
-with its original attribution/license. [Asset preparation](../baselines/ASSETS.md)
+Local task adapters and the required attributed ALIGNED core are distributed.
+Other external source is acquired separately with its original license.
+[Asset preparation](../baselines/ASSETS.md)
 lists source pins, downloads, schema conversions and manual prerequisites.
 
 ## Shared setup
 
 Run S1Pert preprocessing, labeling and `prepare` for each cell before any baseline.
-The baseline inputs must point to `workspace/a4/data`, not a different split.
-From the repository root:
+The baseline inputs must point to the shared work directory's `data/`, not a different split.
+Below, `W` denotes the shared work directory (the same value as `S1PERT_ROOT`).
+From the repository root, initialize it once if it does not already exist:
 
 ```bash
-python baselines/fetch_external.py --list
-python baselines/fetch_external.py --repo gears --repo perturbqa --repo state --repo scgpt --dry-run
+python -m experiments.paper init --work-dir W
+python baselines/fetch_external.py --root W --list
+python baselines/fetch_external.py --root W --repo gears --repo perturbqa --repo state --repo scgpt --dry-run
 # Explicit network acquisition (no model execution):
-python baselines/fetch_external.py --repo gears --repo perturbqa --repo state --repo scgpt
-python baselines/fetch_external.py --asset genept --asset kg --asset gene2go --asset esm2
+python baselines/fetch_external.py --root W --repo gears --repo perturbqa --repo state --repo scgpt
+python baselines/fetch_external.py --root W --asset genept --asset kg --asset gene2go --asset esm2
 ```
 
 Use separate environments for the classical, STATE and vLLM stacks. Install
-S1Pert in each. JSON resource paths resolve relative to the JSON file. Copy the
-family's example in the same directory to `config.local.json`, edit it, then use
-`baselines/run.py init` to stage a **new** workspace. Initialization copies small
+S1Pert in each. JSON resource paths resolve relative to the JSON file. The paper
+initializer writes each family's correctly rooted JSON under `W/configs/`.
+Review these configs, then use `baselines/run.py init` to stage a **new** family
+workspace. Initialization copies small
 adapter code, resolves asset paths, and does not download, train or load weights.
 `execute --plan -- ...` prints a command without executing it.
 
@@ -45,8 +49,8 @@ adapter code, resolves asset paths, and does not download, train or load weights
 
 ```bash
 python scripts/export_prior.py \
-  --partition workspace/a4/data/hepg2/seed_17/test \
-  --out workspace/predictions/P1/hepg2/seed_17/test_predictions.npz
+  --partition W/data/hepg2/seed_17/test \
+  --out W/baselines/p1/hepg2/seed_17/test_predictions.npz
 ```
 
 P1 reads the prepared TRAIN-derived probability features. For unseen queries it
@@ -57,16 +61,15 @@ these exported answers are not fed to S1Pert or any new predictor.
 
 ```bash
 python -m pip install -r baselines/requirements-classical.txt
-cp baselines/classical/config.example.json baselines/classical/config.local.json
 python baselines/run.py init --family classical \
-  --config baselines/classical/config.local.json --work workspace/classical
+  --config W/configs/classical.json --work W/baselines/classical
 
-python baselines/run.py execute --work workspace/classical -- prepare.py genept
-python baselines/run.py execute --work workspace/classical -- prepare.py expression --cell hepg2
+python baselines/run.py execute --work W/baselines/classical -- prepare.py genept
+python baselines/run.py execute --work W/baselines/classical -- prepare.py expression --cell hepg2
 # GEARS only: constructs public GO and TRAIN/control coexpression graphs.
-python baselines/run.py execute --work workspace/classical -- prepare.py native_graphs --cell hepg2 --seed 17
+python baselines/run.py execute --work W/baselines/classical -- prepare.py native_graphs --cell hepg2 --seed 17
 
-python baselines/run.py execute --work workspace/classical -- train.py train \
+python baselines/run.py execute --work W/baselines/classical -- train.py train \
   --method genept_gene --cell hepg2 --seed 17 --out runs/genept_gene/hepg2/seed_17
 ```
 
@@ -101,12 +104,11 @@ Prepare the exact ESM2 asset mapping and classical per-cell expression stores as
 described in ASSETS.md. Configure `expression_root` to that classical workspace.
 
 ```bash
-cp baselines/state/config.example.json baselines/state/config.local.json
-python baselines/run.py init --family state --config baselines/state/config.local.json --work workspace/state
-python baselines/run.py execute --work workspace/state -- run.py preflight
-python baselines/run.py execute --work workspace/state -- run.py train --cell hepg2 --seed 17
-python baselines/run.py execute --work workspace/state -- run.py evaluate --cell hepg2 --seed 17
-python baselines/run.py execute --work workspace/state -- run.py summary
+python baselines/run.py init --family state --config W/configs/state.json --work W/baselines/state
+python baselines/run.py execute --work W/baselines/state -- run.py preflight
+python baselines/run.py execute --work W/baselines/state -- run.py train --cell hepg2 --seed 17
+python baselines/run.py execute --work W/baselines/state -- run.py evaluate --cell hepg2 --seed 17
+python baselines/run.py execute --work W/baselines/state -- run.py summary
 ```
 
 STATE uses fresh task weights, the official eight-layer/768-width transition
@@ -126,11 +128,10 @@ It uses no teacher-generated labels or task fine-tuning.
 
 ```bash
 python -m pip install -r baselines/requirements-summer.txt
-python baselines/prepare_public_edges.py --archive assets/baselines/kg.zip --out assets/public_edges.sqlite
-cp baselines/summer/config.example.json baselines/summer/config.local.json
-python baselines/run.py init --family summer --config baselines/summer/config.local.json --work workspace/summer
-python baselines/run.py execute --work workspace/summer -- fast_summer.py preflight
-python baselines/run.py execute --work workspace/summer -- fast_summer.py pipeline
+python baselines/prepare_public_edges.py --archive W/assets/baselines/kg.zip --out W/assets/public_edges.sqlite
+python baselines/run.py init --family summer --config W/configs/summer.json --work W/baselines/summer
+python baselines/run.py execute --work W/baselines/summer -- fast_summer.py preflight
+python baselines/run.py execute --work W/baselines/summer -- fast_summer.py pipeline
 ```
 
 The queue covers all configured cells/seeds, caches native generations and stops
@@ -140,7 +141,7 @@ outputs count as errors, never Same. Hard-label exports support classification
 metrics; no probabilities or ranking AUCs are fabricated. Public-edge rebuilds
 are documented new snapshots and do not assert equality to an unavailable old DB.
 
-## Qwen3-4B-LoRA and ALIGNED
+## Qwen3-4B-LoRA
 
 [Qwen adapter instructions](../baselines/language/README.md) describe the retained
 local implementation: LoRA r=32/alpha=64, 512 sampled TRAIN rows per epoch and
@@ -149,10 +150,47 @@ local implementation: LoRA r=32/alpha=64, 512 sampled TRAIN rows per epoch and
 official PertReasonLM SFT/GRPO system. Do not label this small-budget comparator
 as a converged full-data LoRA experiment.
 
-[ALIGNED source availability](../baselines/aligned/README.md) records the missing
-training implementation. Provided ALIGNED outputs can be registered with the
-same pair-aligned evaluation command; the package does not claim a new ALIGNED
-training run or silently substitute a plain neural network.
+## ALIGNED
+
+The [ALIGNED adapter](../baselines/aligned/README.md) ports the actual inspected
+training implementation. All seven previously recorded core hashes matched the
+source supplied from its original execution environment. The scientific engine
+and pinned official core retain their exact bytes; workspace paths, input seals
+and probability export are portable adaptations.
+
+```bash
+python -m pip install -r baselines/requirements-aligned.txt
+python scripts/download_assets.py --manifest data_prep/public_knowledge/sources.json --root W --group public_knowledge --dry-run
+python scripts/download_assets.py --manifest data_prep/public_knowledge/sources.json --root W --group public_knowledge
+python -m data_prep.build_public_knowledge --work-dir W
+python -m baselines.aligned.run prepare --work-dir W --cell hepg2 --seed 17
+python -m baselines.aligned.run train --work-dir W --cell hepg2 --seed 17 --device cuda
+python -m baselines.aligned.run restore --work-dir W --cell hepg2 --seed 17 --device cuda
+python -m baselines.aligned.run evaluate --work-dir W --cell hepg2 --seed 17 --device cuda
+```
+
+The public builder reconstructs signed edges, canonical mappings and direct GO
+annotations from explicit public snapshots. It verifies historical input hashes
+by default; a changed snapshot requires an explicitly refreshed protocol.
+Only the public tables consumed by ALIGNED are exported. Dataset responses,
+task predictions and empirical-response tables never enter this knowledge input.
+
+ALIGNED uses the official hidden-64 MLP and learned R adaptor. Its fixed endpoint
+is the second knowledge-refinement round, following initialization, pretraining
+and two complete retrain/refine rounds. Each run starts with fresh task weights;
+only TRAIN targets contribute to pseudo-label training and graph refinement.
+VAL verifies independent restoration and does not select a stage. The original
+hybrid output is retained: final neural softmax when R≤0.5 and final KB deduction
+point mass when R>0.5. Canonical `test_predictions.npz` includes continuous
+probabilities and exact target/query/labels, with argmax checked against the
+original hybrid decision. No ALIGNED output feeds S1Pert.
+
+Defaults are `W/baselines/aligned/{prepared,runs}/CELL/seed_SEED`. The formal
+config is `W/configs/aligned.json` when supplied, otherwise the bundled official
+default. `--prepared-root` and `--output` support isolated runtime experiments.
+The training and restoration/evaluation commands run in separate processes.
+See the adapter README for objective details, original-code adaptations,
+snapshot requirements and CPU fixture tests.
 
 ## Export and summarize
 

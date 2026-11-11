@@ -1,0 +1,1114 @@
+{
+  "schema": "s1pert.paper-source-coverage.v1",
+  "status": "SOURCE_COVERAGE_PASS",
+  "scope": "Static source definitions, declared producer/consumer links, input-reading/measurement call sites and file hashes",
+  "scientific_reproduction_verified": false,
+  "training_or_inference_started": false,
+  "network_accessed": false,
+  "external_dependencies_checked": false,
+  "numerical_results_checked": false,
+  "no_hardcoded_results_proven": false,
+  "limits": [
+    "Static presence is not numerical or scientific correctness.",
+    "Required read-call checks catch simple plotting stubs; they do not prove complete data lineage.",
+    "Source snapshot availability, software installation, hardware and full runs are separate checks.",
+    "Optional artifact counts are presence-only; no count is interpreted as an experiment PASS."
+  ],
+  "stages_expected": 7,
+  "stages_source_covered": 7,
+  "stages": [
+    {
+      "stage": 1,
+      "name": "Raw preprocessing, adjudication, splits and Table III",
+      "paper": [
+        "Algorithm 1",
+        "Table I",
+        "Table III"
+      ],
+      "depends_on": [],
+      "consumes": [
+        "external:raw_h5ad",
+        "external:public_gene_functions"
+      ],
+      "produces": [
+        "normalized_moments",
+        "strict_labels",
+        "target_splits",
+        "crossfit_evidence",
+        "table3"
+      ],
+      "upstream": [
+        {
+          "path": "src/jev_a4/data/preprocess.py",
+          "symbols": [
+            "build",
+            "process_nadig",
+            "process_replogle"
+          ],
+          "calls": [],
+          "status": "SOURCE_PRESENT",
+          "issues": [],
+          "sha256": "742646ad1c5d4f7b1934fd3a9dea402f068b62207b52c32d1dd4fedb8e86f9b5",
+          "size_bytes": 16405
+        },
+        {
+          "path": "src/jev_a4/data/nadig_moments.py",
+          "symbols": [
+            "aggregate_moments"
+          ],
+          "calls": [],
+          "status": "SOURCE_PRESENT",
+          "issues": [],
+          "sha256": "fd568ac50a515d4a01d44103a500d7762eb7bdd8d3d1027ec317f793898fd239",
+          "size_bytes": 11026
+        },
+        {
+          "path": "src/jev_a4/labels/label_core.py",
+          "symbols": [
+            "adjust",
+            "scaled_welch",
+            "label_pair"
+          ],
+          "calls": [],
+          "status": "SOURCE_PRESENT",
+          "issues": [],
+          "sha256": "b9021e8eae85cd695d43e54ce41119584986e466a2faa279c9176c0c05110392",
+          "size_bytes": 6173
+        },
+        {
+          "path": "src/jev_a4/labels/build_resolution_bundle.py",
+          "symbols": [
+            "process_dataset",
+            "build"
+          ],
+          "calls": [],
+          "status": "SOURCE_PRESENT",
+          "issues": [],
+          "sha256": "06659c75c87373b7107d1f5cf06114fec95d5cc6440e75ce018c119df958c22e",
+          "size_bytes": 18108
+        },
+        {
+          "path": "src/jev_a4/core/prepare.py",
+          "symbols": [
+            "prepare",
+            "split_targets",
+            "prior_arrays"
+          ],
+          "calls": [],
+          "status": "SOURCE_PRESENT",
+          "issues": [],
+          "sha256": "fda5ece12f2217ee24320540c669ff6d0e0fe8a88ae67df1f7129c3b02496fa1",
+          "size_bytes": 33246
+        },
+        {
+          "path": "src/jev_a4/knowledge.py",
+          "symbols": [],
+          "calls": [],
+          "status": "SOURCE_PRESENT",
+          "issues": [],
+          "sha256": "bc06a1b8a1e536b675a401b1036d91b76fbc20cc6840ed11df5fd5b409f7e833",
+          "size_bytes": 3667
+        },
+        {
+          "path": "experiments/paper.py",
+          "symbols": [
+            "initialize",
+            "plan"
+          ],
+          "calls": [],
+          "status": "SOURCE_PRESENT",
+          "issues": [],
+          "sha256": "e9cefb6f6cd3721e5918e3e93bd4314259d09f4ee50f90627f9c68dd4f73ddb8",
+          "size_bytes": 16149
+        }
+      ],
+      "downstream": [
+        {
+          "path": "data_prep/table3.py",
+          "symbols": [
+            "generate",
+            "summarize_arrays"
+          ],
+          "calls": [
+            "load_array"
+          ],
+          "status": "SOURCE_PRESENT",
+          "issues": [],
+          "sha256": "605c11677898d49e68ecfa6c9c9475236137c32dca43ad68819665b5633a4a29",
+          "size_bytes": 5375
+        },
+        {
+          "path": "plotting/make_table3_stats.py",
+          "symbols": [
+            "main",
+            "render"
+          ],
+          "calls": [
+            "generate"
+          ],
+          "status": "SOURCE_PRESENT",
+          "issues": [],
+          "sha256": "666a924dc1adb2b96248a1d92be04cedc5de8e40f8c5251fdbf403453e413916",
+          "size_bytes": 1428
+        }
+      ],
+      "commands": [
+        "python -m experiments.paper data --work-dir WORK --execute",
+        "python -m experiments.paper prepare --work-dir WORK --execute",
+        "python -m experiments.run_section table3 --work-dir WORK --execute"
+      ],
+      "artifact_patterns": [
+        "preprocessed/*/manifest.json",
+        "strict_labels/*/hard_label.npy",
+        "data/*/preparation_report.json",
+        "paper/table3/table_dataset_summary.csv"
+      ],
+      "issues": [],
+      "status": "SOURCE_COVERED",
+      "scientific_execution_verified": false
+    },
+    {
+      "stage": 2,
+      "name": "Frozen multilevel and joint landmark caching",
+      "paper": [
+        "Section III-D",
+        "Equations 4-8"
+      ],
+      "depends_on": [
+        1
+      ],
+      "consumes": [
+        "target_splits",
+        "crossfit_evidence",
+        "external:decider_4b_snapshot"
+      ],
+      "produces": [
+        "shared_landmarks",
+        "joint_present_absent",
+        "evidence_cards"
+      ],
+      "upstream": [
+        {
+          "path": "src/jev_a4/core/encode.py",
+          "symbols": [
+            "Session",
+            "compress16",
+            "compress4",
+            "finite_cards",
+            "encode_dataset",
+            "encode_split"
+          ],
+          "calls": [],
+          "status": "SOURCE_PRESENT",
+          "issues": [],
+          "sha256": "ceab4d1d7e24d8a6528e7cea04dec0ebaabed1a7fb79ab39c7a7f525ee6c353c",
+          "size_bytes": 39493
+        },
+        {
+          "path": "src/jev_a4/core/vendor/shared_core.py",
+          "symbols": [
+            "split_forward"
+          ],
+          "calls": [],
+          "status": "SOURCE_PRESENT",
+          "issues": [],
+          "sha256": "4c8903be2d42f8eced03eed2cd6e1eecf6a1d98fdff87dba4c90e1143509fe9c",
+          "size_bytes": 2119
+        },
+        {
+          "path": "src/jev_a4/core/vendor/encode_joint_last8_cache.py",
+          "symbols": [
+            "pool_contextual_landmarks",
+            "_run_tuple_batch"
+          ],
+          "calls": [],
+          "status": "SOURCE_PRESENT",
+          "issues": [],
+          "sha256": "524df7032c0ab20c1c998ae59678d6798ed107440d3c368b321396070b65d318",
+          "size_bytes": 2959
+        },
+        {
+          "path": "src/jev_a4/core/vendor/native_engine.py",
+          "symbols": [
+            "_load_model"
+          ],
+          "calls": [],
+          "status": "SOURCE_PRESENT",
+          "issues": [],
+          "sha256": "5a08c9e0e503361ecd8ea14a442a6b9968a3a7ba924c4fd0c9c5eba51baf9b5d",
+          "size_bytes": 7306
+        }
+      ],
+      "downstream": [
+        {
+          "path": "src/jev_a4/core/train.py",
+          "symbols": [
+            "SharedCache",
+            "Partition"
+          ],
+          "calls": [
+            "load"
+          ],
+          "status": "SOURCE_PRESENT",
+          "issues": [],
+          "sha256": "5ebd0f4c0019d745d08dc54a4c99d85c7da1936392eef44fabd33bf8ff1475e2",
+          "size_bytes": 47341
+        }
+      ],
+      "commands": [
+        "python -m experiments.paper encode --work-dir WORK --execute"
+      ],
+      "artifact_patterns": [
+        "cache/*/manifest.json",
+        "cache/*/seed_*/manifest.json",
+        "cache/*/seed_*/test/joint_present.npy",
+        "cache/*/seed_*/test/joint_absent.npy"
+      ],
+      "issues": [],
+      "status": "SOURCE_COVERED",
+      "scientific_execution_verified": false
+    },
+    {
+      "stage": 3,
+      "name": "S1Pert and eight compared baselines, Table II",
+      "paper": [
+        "Section IV-B",
+        "Table II"
+      ],
+      "depends_on": [
+        1,
+        2
+      ],
+      "consumes": [
+        "strict_labels",
+        "target_splits",
+        "crossfit_evidence",
+        "shared_landmarks",
+        "joint_present_absent",
+        "external:baseline_backbones_and_sources",
+        "external:public_graph_snapshots"
+      ],
+      "produces": [
+        "selected_models",
+        "heldout_predictions",
+        "prediction_registry",
+        "table2"
+      ],
+      "methods": [
+        "S1Pert",
+        "GenePT-Gene",
+        "GenePT-Prot",
+        "Qwen3-4B-LoRA",
+        "GEARS",
+        "scGPT",
+        "STATE",
+        "ALIGNED",
+        "SUMMER"
+      ],
+      "upstream": [
+        {
+          "path": "src/jev_a4/core/pipeline.py",
+          "symbols": [
+            "Workflow",
+            "validate_config"
+          ],
+          "calls": [],
+          "status": "SOURCE_PRESENT",
+          "issues": [],
+          "sha256": "ac4e0d2fb8d8ceda50068e589b3a22bde64e6ed5dfa4b39f9727c05b44a7a5e5",
+          "size_bytes": 20144
+        },
+        {
+          "path": "src/jev_a4/core/train.py",
+          "symbols": [
+            "train",
+            "restore_check",
+            "evaluate_test"
+          ],
+          "calls": [],
+          "status": "SOURCE_PRESENT",
+          "issues": [],
+          "sha256": "5ebd0f4c0019d745d08dc54a4c99d85c7da1936392eef44fabd33bf8ff1475e2",
+          "size_bytes": 47341
+        },
+        {
+          "path": "src/jev_a4/core/train_memory_safe.py",
+          "symbols": [
+            "main"
+          ],
+          "calls": [],
+          "status": "SOURCE_PRESENT",
+          "issues": [],
+          "sha256": "b43cf25dbea4c0c351a1c9854d35e9ba956bb634a9365160d8c06840236d816f",
+          "size_bytes": 7236
+        },
+        {
+          "path": "src/jev_a4/core/vendor/prior_model.py",
+          "symbols": [
+            "make_prior_model"
+          ],
+          "calls": [],
+          "status": "SOURCE_PRESENT",
+          "issues": [],
+          "sha256": "40874002208023348acff2a3695c48c1c5ab2387f77b1a35d7865f539311e7d9",
+          "size_bytes": 7969
+        },
+        {
+          "path": "baselines/run.py",
+          "symbols": [],
+          "calls": [],
+          "status": "SOURCE_PRESENT",
+          "issues": [],
+          "sha256": "9a9a61e5785fa596ba063b70f333890f86c5e76e5555b7b611451f515cd8f89b",
+          "size_bytes": 4015
+        },
+        {
+          "path": "baselines/fetch_external.py",
+          "symbols": [
+            "fetch_repo"
+          ],
+          "calls": [],
+          "status": "SOURCE_PRESENT",
+          "issues": [],
+          "sha256": "8e141a933581ec6b5d1c1e04b88a3975b14dbd8965cbb728e66742733793bd32",
+          "size_bytes": 7875
+        },
+        {
+          "path": "baselines/classical/prepare.py",
+          "symbols": [],
+          "calls": [],
+          "status": "SOURCE_PRESENT",
+          "issues": [],
+          "sha256": "584bbeff47240273a691931a4883747c27d491d1c2b26f93d1da04f2a416146b",
+          "size_bytes": 16236
+        },
+        {
+          "path": "baselines/classical/train.py",
+          "symbols": [
+            "fit_genept",
+            "fit_epochs",
+            "restore"
+          ],
+          "calls": [],
+          "status": "SOURCE_PRESENT",
+          "issues": [],
+          "sha256": "21456370823923289cb5afd77db4084fe8e8d373c9f0ec52623733670eb1a010",
+          "size_bytes": 19006
+        },
+        {
+          "path": "baselines/classical/models.py",
+          "symbols": [
+            "GenePTClassifier",
+            "gears_model",
+            "scgpt_model"
+          ],
+          "calls": [],
+          "status": "SOURCE_PRESENT",
+          "issues": [],
+          "sha256": "e655485876dca9dbac6afde1666c7796234a15c91e34388adc27f759a6df18c8",
+          "size_bytes": 9593
+        },
+        {
+          "path": "baselines/language/qwen3_lora.py",
+          "symbols": [
+            "LoRAQA",
+            "run",
+            "evaluate"
+          ],
+          "calls": [],
+          "status": "SOURCE_PRESENT",
+          "issues": [],
+          "sha256": "920965c67e6acb7892447e2c8517e5e296fcbe99c142ad8b2ab3660b42b5a73a",
+          "size_bytes": 16722
+        },
+        {
+          "path": "baselines/language/build_graph.py",
+          "symbols": [
+            "build"
+          ],
+          "calls": [],
+          "status": "SOURCE_PRESENT",
+          "issues": [],
+          "sha256": "27a3419a841489d68e4964a7f18647443db4e0f4d7a0925f522e591cab8ff50c",
+          "size_bytes": 5274
+        },
+        {
+          "path": "baselines/state/run.py",
+          "symbols": [
+            "train",
+            "evaluate"
+          ],
+          "calls": [],
+          "status": "SOURCE_PRESENT",
+          "issues": [],
+          "sha256": "69822609defa9b8365ccc9d2cb3efc8e584dd3b8264bac2b400bfe36e504c586",
+          "size_bytes": 23093
+        },
+        {
+          "path": "baselines/state/native.py",
+          "symbols": [],
+          "calls": [],
+          "status": "SOURCE_PRESENT",
+          "issues": [],
+          "sha256": "4fda2cab902fe5ef971f61b921ad8e8e3af46e5793ea232efa41224c8467e673",
+          "size_bytes": 2625
+        },
+        {
+          "path": "baselines/aligned/run.py",
+          "symbols": [
+            "train",
+            "evaluate"
+          ],
+          "calls": [],
+          "status": "SOURCE_PRESENT",
+          "issues": [],
+          "sha256": "6e669e824544ba3239a71579ba3025e0d06f967617b94754cafd444280548527",
+          "size_bytes": 10402
+        },
+        {
+          "path": "baselines/aligned/aligned_data.py",
+          "symbols": [
+            "build_public_graph"
+          ],
+          "calls": [],
+          "status": "SOURCE_PRESENT",
+          "issues": [],
+          "sha256": "1a2b4b23ce4bb05eb4ebefde567305e9385ca03ef41ed192873919661d4bfd31",
+          "size_bytes": 17419
+        },
+        {
+          "path": "baselines/aligned/aligned_engine.py",
+          "symbols": [
+            "AlignedEngine"
+          ],
+          "calls": [],
+          "status": "SOURCE_PRESENT",
+          "issues": [],
+          "sha256": "4da58e362385daa87849f8904569eef2d0bc9bb2b3c0bcd0cff0a91c62288483",
+          "size_bytes": 23042
+        },
+        {
+          "path": "baselines/aligned/aligned_runner.py",
+          "symbols": [
+            "train",
+            "evaluate"
+          ],
+          "calls": [],
+          "status": "SOURCE_PRESENT",
+          "issues": [],
+          "sha256": "ec36c4b9d41b1c5ef7123a0a07beb591a29c4258612ea75adfb587902efe4087",
+          "size_bytes": 27158
+        },
+        {
+          "path": "baselines/aligned/official_source/aligned/abl.py",
+          "symbols": [],
+          "calls": [],
+          "status": "SOURCE_PRESENT",
+          "issues": [],
+          "sha256": "f66cbbbaf712f4c8546cd9d8707dd9ab51d3fe5d7334a6b22b84b4be0953f3ed",
+          "size_bytes": 8282
+        },
+        {
+          "path": "baselines/aligned/official_source/aligned/reasoner.py",
+          "symbols": [],
+          "calls": [],
+          "status": "SOURCE_PRESENT",
+          "issues": [],
+          "sha256": "b6e9b221ffc4b4fa57e3203fb1b1535200727658f07e27f2e46ed6ca1f28bf67",
+          "size_bytes": 22920
+        },
+        {
+          "path": "baselines/aligned/official_source/aligned/learner_adap.py",
+          "symbols": [],
+          "calls": [],
+          "status": "SOURCE_PRESENT",
+          "issues": [],
+          "sha256": "8bd7cfd92c2a4b96a461c451d8f8c0506e12cf2535bdfbaae933665bd4403602",
+          "size_bytes": 35032
+        },
+        {
+          "path": "data_prep/build_public_knowledge.py",
+          "symbols": [
+            "build"
+          ],
+          "calls": [],
+          "status": "SOURCE_PRESENT",
+          "issues": [],
+          "sha256": "eaac1e32807e253e75df1aafa4d325fc0fadfb378f8340dbc66a4564d6626942",
+          "size_bytes": 14110
+        },
+        {
+          "path": "baselines/summer/code/fast_summer.py",
+          "symbols": [
+            "FastEngine",
+            "pipeline",
+            "evaluate_full"
+          ],
+          "calls": [],
+          "status": "SOURCE_PRESENT",
+          "issues": [],
+          "sha256": "8d7aa5319726bde52dfeb9bce22fc66b4b2e74a469013af389d044814ea3cb73",
+          "size_bytes": 18130
+        },
+        {
+          "path": "baselines/prepare_public_edges.py",
+          "symbols": [
+            "build"
+          ],
+          "calls": [],
+          "status": "SOURCE_PRESENT",
+          "issues": [],
+          "sha256": "72f11c534c95ee3a2344e06934351f33b243536d891733de5e96ec4e0ce8dda0",
+          "size_bytes": 4811
+        },
+        {
+          "path": "baselines/prepare_esm2.py",
+          "symbols": [
+            "build"
+          ],
+          "calls": [],
+          "status": "SOURCE_PRESENT",
+          "issues": [],
+          "sha256": "99808bd9f6a82b3808c47be0f7c32c3f1f44d16052e00838136fb174dfdbd1ed",
+          "size_bytes": 5986
+        },
+        {
+          "path": "experiments/main_table2.py",
+          "symbols": [
+            "main"
+          ],
+          "calls": [],
+          "status": "SOURCE_PRESENT",
+          "issues": [],
+          "sha256": "3974a3f2259e586c5fe51a27e02c32b0c77490192ee69579a830a2374127bee7",
+          "size_bytes": 2861
+        }
+      ],
+      "downstream": [
+        {
+          "path": "experiments/paper.py",
+          "symbols": [
+            "register"
+          ],
+          "calls": [
+            "load_prediction"
+          ],
+          "status": "SOURCE_PRESENT",
+          "issues": [],
+          "sha256": "e9cefb6f6cd3721e5918e3e93bd4314259d09f4ee50f90627f9c68dd4f73ddb8",
+          "size_bytes": 16149
+        },
+        {
+          "path": "src/jev_a4/evaluation.py",
+          "symbols": [
+            "load_prediction",
+            "evaluate",
+            "summarize"
+          ],
+          "calls": [
+            "load"
+          ],
+          "status": "SOURCE_PRESENT",
+          "issues": [],
+          "sha256": "e19d8dad7828c1aea0ac5856c2af3ae28dc3683daab54688b9cfe5b108f1b039",
+          "size_bytes": 6235
+        },
+        {
+          "path": "plotting/make_table2_main.py",
+          "symbols": [
+            "build"
+          ],
+          "calls": [
+            "DictReader",
+            "evaluate"
+          ],
+          "status": "SOURCE_PRESENT",
+          "issues": [],
+          "sha256": "4a786439a0b4e0f2294fcdf6166a2675c4c72d685df0c3475c1c755ec31e1087",
+          "size_bytes": 5020
+        }
+      ],
+      "commands": [
+        "python -m experiments.main_table2 --work-dir WORK --execute"
+      ],
+      "artifact_patterns": [
+        "runs/main/*/seed_*/test_predictions.npz",
+        "baselines/*/runs/**/test_predictions.npz",
+        "baselines/qwen3_lora/*/seed_*/test_predictions.npz",
+        "paper/predictions.csv",
+        "paper/table2/table_II_per_split.csv",
+        "paper/table2/table_II.tex"
+      ],
+      "issues": [],
+      "status": "SOURCE_COVERED",
+      "scientific_execution_verified": false
+    },
+    {
+      "stage": 4,
+      "name": "Retrained component ablations and target permutation",
+      "paper": [
+        "Section IV-C",
+        "Table IV"
+      ],
+      "depends_on": [
+        1,
+        2,
+        3
+      ],
+      "consumes": [
+        "target_splits",
+        "crossfit_evidence",
+        "shared_landmarks",
+        "joint_present_absent",
+        "selected_models"
+      ],
+      "produces": [
+        "ablation_predictions",
+        "permutation_predictions",
+        "table4"
+      ],
+      "variants": [
+        "NO_JEV",
+        "NO_JOINT",
+        "FLAT",
+        "NO_RANK",
+        "NO_MASK",
+        "TARGET_PERMUTATION"
+      ],
+      "upstream": [
+        {
+          "path": "experiments/ablation.py",
+          "symbols": [
+            "variant_config",
+            "permutation",
+            "permute_checkpoint",
+            "main"
+          ],
+          "calls": [],
+          "status": "SOURCE_PRESENT",
+          "issues": [],
+          "sha256": "92fb0f7cdbd84d5092a21a759289995677edd9e20145b3cde930c665820cb278",
+          "size_bytes": 12542
+        },
+        {
+          "path": "experiments/ablation_runtime/model.py",
+          "symbols": [],
+          "calls": [],
+          "status": "SOURCE_PRESENT",
+          "issues": [],
+          "sha256": "30b7f4d1e120fca032040d320a7a4845ffa97776d63c0252575ef823b80f792c",
+          "size_bytes": 7362
+        },
+        {
+          "path": "experiments/ablation_runtime/trainer.py",
+          "symbols": [],
+          "calls": [],
+          "status": "SOURCE_PRESENT",
+          "issues": [],
+          "sha256": "0a4189ba0417af38945ff1002e6cd09bfd057618f7827880548b765a51ae2959",
+          "size_bytes": 22179
+        },
+        {
+          "path": "experiments/ablation_runtime/contract.py",
+          "symbols": [],
+          "calls": [],
+          "status": "SOURCE_PRESENT",
+          "issues": [],
+          "sha256": "bcefe64282c7340859e6ba97d522e22b48ccdb4f4c52748d75ae56ae9cbfb0bb",
+          "size_bytes": 519
+        }
+      ],
+      "downstream": [
+        {
+          "path": "plotting/make_table4_ablation.py",
+          "symbols": [
+            "collect",
+            "summarize",
+            "render_table"
+          ],
+          "calls": [
+            "load",
+            "evaluate"
+          ],
+          "status": "SOURCE_PRESENT",
+          "issues": [],
+          "sha256": "1151ef8c116289fcabcc640354b899c26d734acdf943ebe99405d2506c4c22a4",
+          "size_bytes": 6610
+        }
+      ],
+      "commands": [
+        "python -m experiments.run_section table4 --work-dir WORK --execute"
+      ],
+      "artifact_patterns": [
+        "paper/ablation/*/*/seed_*/test_predictions.npz",
+        "paper/table4/table4.csv"
+      ],
+      "issues": [],
+      "status": "SOURCE_COVERED",
+      "scientific_execution_verified": false
+    },
+    {
+      "stage": 5,
+      "name": "Cross-target ranking and prior-stress evaluation",
+      "paper": [
+        "Section IV-D",
+        "Fig. 1"
+      ],
+      "depends_on": [
+        1,
+        3
+      ],
+      "consumes": [
+        "target_splits",
+        "crossfit_evidence",
+        "heldout_predictions",
+        "prediction_registry"
+      ],
+      "produces": [
+        "standalone_p1",
+        "prior_stress_summary",
+        "fig1"
+      ],
+      "upstream": [
+        {
+          "path": "scripts/export_prior.py",
+          "symbols": [
+            "export"
+          ],
+          "calls": [],
+          "status": "SOURCE_PRESENT",
+          "issues": [],
+          "sha256": "65dde0e16d620fd580cb05aaf6eae701dd2d56c7237db011a10b7dd2cb033b65",
+          "size_bytes": 1122
+        },
+        {
+          "path": "experiments/prior_stress.py",
+          "symbols": [
+            "train_prior",
+            "masks",
+            "run"
+          ],
+          "calls": [],
+          "status": "SOURCE_PRESENT",
+          "issues": [],
+          "sha256": "ce34c1aff15ec7558bc85e5d0237c3a1225f35033952795818a230a1292c0340",
+          "size_bytes": 10609
+        },
+        {
+          "path": "src/jev_a4/evaluation.py",
+          "symbols": [
+            "within_gene",
+            "binary_auc"
+          ],
+          "calls": [],
+          "status": "SOURCE_PRESENT",
+          "issues": [],
+          "sha256": "e19d8dad7828c1aea0ac5856c2af3ae28dc3683daab54688b9cfe5b108f1b039",
+          "size_bytes": 6235
+        }
+      ],
+      "downstream": [
+        {
+          "path": "plotting/plot_fig1_prior_stress.py",
+          "symbols": [
+            "render"
+          ],
+          "calls": [
+            "read_csv",
+            "save_figure"
+          ],
+          "status": "SOURCE_PRESENT",
+          "issues": [],
+          "sha256": "59c5e1e91e78fc78fd257e157e8c819ceec682b687274ce0c0c1c1c2f419b291",
+          "size_bytes": 9346
+        }
+      ],
+      "commands": [
+        "python -m experiments.run_section fig1 --work-dir WORK --execute"
+      ],
+      "artifact_patterns": [
+        "paper/prior_stress/per_split.csv",
+        "paper/prior_stress/summary.csv",
+        "paper/figures/fig_prior_stress.pdf"
+      ],
+      "issues": [],
+      "status": "SOURCE_COVERED",
+      "scientific_execution_verified": false
+    },
+    {
+      "stage": 6,
+      "name": "Disjoint cell pools and zero-retraining boundary evaluation",
+      "paper": [
+        "Section IV-E",
+        "Fig. 2"
+      ],
+      "depends_on": [
+        1,
+        2,
+        3
+      ],
+      "consumes": [
+        "external:raw_h5ad",
+        "normalized_moments",
+        "strict_labels",
+        "target_splits",
+        "crossfit_evidence",
+        "shared_landmarks",
+        "selected_models"
+      ],
+      "produces": [
+        "pool_a_b_labels",
+        "cell_pool_fidelity",
+        "boundary_predictions",
+        "fig2"
+      ],
+      "upstream": [
+        {
+          "path": "data_prep/cell_pool.py",
+          "symbols": [
+            "assign_cell_split",
+            "split_statistics",
+            "build",
+            "prepare",
+            "fidelity"
+          ],
+          "calls": [],
+          "status": "SOURCE_PRESENT",
+          "issues": [],
+          "sha256": "f256326921814b021eba5b710593b1a6784570e6803b5f68ac54121acbd6bb46",
+          "size_bytes": 22764
+        },
+        {
+          "path": "experiments/cell_pool.py",
+          "symbols": [
+            "FrozenBoundaryPredictor",
+            "predict",
+            "evaluate"
+          ],
+          "calls": [],
+          "status": "SOURCE_PRESENT",
+          "issues": [],
+          "sha256": "a6b284e49e55bc9808e7542616979873f24567b8ca435d5669977501d3f73fa2",
+          "size_bytes": 21096
+        }
+      ],
+      "downstream": [
+        {
+          "path": "plotting/plot_fig2_label_boundary.py",
+          "symbols": [
+            "load_inputs",
+            "plot"
+          ],
+          "calls": [
+            "read_csv",
+            "savefig"
+          ],
+          "status": "SOURCE_PRESENT",
+          "issues": [],
+          "sha256": "f57a0aaf859ba55de27a535531abc038a55e30354c732553b39820a0e1ed20e3",
+          "size_bytes": 8896
+        }
+      ],
+      "commands": [
+        "python -m experiments.run_section fig2 --work-dir WORK --execute"
+      ],
+      "artifact_patterns": [
+        "cell_pool/predictions/seed_*/probabilities.npy",
+        "paper/fig2/boundary_per_seed.csv",
+        "paper/fig2/fig2_label_boundary.pdf"
+      ],
+      "issues": [],
+      "status": "SOURCE_COVERED",
+      "scientific_execution_verified": false
+    },
+    {
+      "stage": 7,
+      "name": "Measured online and fresh end-to-end runtime",
+      "paper": [
+        "Section IV-F",
+        "Fig. 3"
+      ],
+      "depends_on": [
+        1,
+        2,
+        3
+      ],
+      "consumes": [
+        "target_splits",
+        "crossfit_evidence",
+        "shared_landmarks",
+        "selected_models",
+        "external:baseline_backbones_and_sources"
+      ],
+      "produces": [
+        "measured_timings",
+        "fig3"
+      ],
+      "upstream": [
+        {
+          "path": "experiments/runtime_recipes.py",
+          "symbols": [
+            "build"
+          ],
+          "calls": [],
+          "status": "SOURCE_PRESENT",
+          "issues": [],
+          "sha256": "95f35afa6f8c9c355fc31e22e690c9d3de4b0f789efeb0f61ae6ca3bd6375f95",
+          "size_bytes": 5993
+        },
+        {
+          "path": "experiments/runtime.py",
+          "symbols": [
+            "measure_phase",
+            "run"
+          ],
+          "calls": [
+            "perf_counter"
+          ],
+          "status": "SOURCE_PRESENT",
+          "issues": [],
+          "sha256": "c76b7c6763175b392a801592b5f08a1cb2e074bf81f887b6ea5720a0495854e3",
+          "size_bytes": 16117
+        },
+        {
+          "path": "experiments/runtime_worker.py",
+          "symbols": [
+            "execute"
+          ],
+          "calls": [
+            "measure_phase"
+          ],
+          "status": "SOURCE_PRESENT",
+          "issues": [],
+          "sha256": "281351c4d3230de126510b367167f6d49be0d09b059984a7a047c2118772bd4f",
+          "size_bytes": 1757
+        },
+        {
+          "path": "experiments/runtime_factories.py",
+          "symbols": [
+            "s1pert_online",
+            "summer_online",
+            "summer_offline"
+          ],
+          "calls": [],
+          "status": "SOURCE_PRESENT",
+          "issues": [],
+          "sha256": "e471998acbba6901ce1e03368068ba6feeb4db96008c84a04f38be97cc6dc893",
+          "size_bytes": 7684
+        },
+        {
+          "path": "baselines/aligned/run.py",
+          "symbols": [
+            "load_for_timing"
+          ],
+          "calls": [],
+          "status": "SOURCE_PRESENT",
+          "issues": [],
+          "sha256": "6e669e824544ba3239a71579ba3025e0d06f967617b94754cafd444280548527",
+          "size_bytes": 10402
+        }
+      ],
+      "downstream": [
+        {
+          "path": "plotting/plot_fig3_runtime.py",
+          "symbols": [
+            "render"
+          ],
+          "calls": [
+            "read_text",
+            "save_figure"
+          ],
+          "status": "SOURCE_PRESENT",
+          "issues": [],
+          "sha256": "186a001f32e605a8469c78b4466afc1c922d5931cd9004c9186c0f2dd9dfe275",
+          "size_bytes": 4241
+        }
+      ],
+      "commands": [
+        "python -m experiments.run_section fig3 --runtime-mode fresh --work-dir WORK --execute"
+      ],
+      "artifact_patterns": [
+        "paper/runtime_fresh/timings.json",
+        "paper/figures/fig_runtime_efficiency.pdf"
+      ],
+      "issues": [],
+      "status": "SOURCE_COVERED",
+      "scientific_execution_verified": false
+    }
+  ],
+  "shared_sources": [
+    {
+      "path": "experiments/paper.py",
+      "symbols": [],
+      "calls": [],
+      "status": "SOURCE_PRESENT",
+      "issues": [],
+      "sha256": "e9cefb6f6cd3721e5918e3e93bd4314259d09f4ee50f90627f9c68dd4f73ddb8",
+      "size_bytes": 16149
+    },
+    {
+      "path": "experiments/run_section.py",
+      "symbols": [],
+      "calls": [],
+      "status": "SOURCE_PRESENT",
+      "issues": [],
+      "sha256": "2543b5c5d68f9d05b69da431394f99613d477c49ccc8b2036b9fb1fe16982871",
+      "size_bytes": 2872
+    },
+    {
+      "path": "src/jev_a4/config.py",
+      "symbols": [],
+      "calls": [],
+      "status": "SOURCE_PRESENT",
+      "issues": [],
+      "sha256": "6483686ee225e87fc7b9b8d1ec47fb4ef133d4b952480be5b3cb237dd92f28ca",
+      "size_bytes": 2654
+    },
+    {
+      "path": "scripts/download_assets.py",
+      "symbols": [],
+      "calls": [],
+      "status": "SOURCE_PRESENT",
+      "issues": [],
+      "sha256": "8048fa43dd68051b90c4f89465621f518475e8cf5d8d02781bd58e1c3f4c1ccc",
+      "size_bytes": 11842
+    },
+    {
+      "path": "configs/downloads.json",
+      "symbols": [],
+      "calls": [],
+      "status": "SOURCE_PRESENT",
+      "issues": [],
+      "sha256": "f88d56e7b989c7e8cfda840868e998e25f69c6cfd084c6f6393d3ca682b4d1a8",
+      "size_bytes": 9423
+    },
+    {
+      "path": "baselines/adapter_inventory.json",
+      "symbols": [],
+      "calls": [],
+      "status": "SOURCE_PRESENT",
+      "issues": [],
+      "sha256": "0399f2f4f0f762c1b7f27e9140a6a9fa603977fc0fea3dea51bdbc074adc0e5b",
+      "size_bytes": 4347
+    },
+    {
+      "path": "baselines/language/graph_sources.json",
+      "symbols": [],
+      "calls": [],
+      "status": "SOURCE_PRESENT",
+      "issues": [],
+      "sha256": "bf1c923fdb10855e8456bb8ab1c7b8ed7e9dd1ed642ab62b3242814bb7cf6e2c",
+      "size_bytes": 3329
+    },
+    {
+      "path": "data_prep/public_knowledge/sources.json",
+      "symbols": [],
+      "calls": [],
+      "status": "SOURCE_PRESENT",
+      "issues": [],
+      "sha256": "3165cfbb199780c534da5cfb34cb75ce388585ab529c646864399c823d9da352",
+      "size_bytes": 7466
+    }
+  ],
+  "issues": []
+}

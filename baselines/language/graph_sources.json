@@ -1,0 +1,61 @@
+{
+  "schema": "s1pert.public-assets.v1",
+  "root": "../..",
+  "notes": [
+    "The four hashes identify the public snapshots consumed by the historical canonical graph. These files are not bundled.",
+    "Only MAP-KG has a revision-pinned URL. OmniPath, NCBI and HGNC locators identify live public endpoints; their current bytes are not guaranteed to match historical hashes. A mismatch stops the downloader and default graph builder.",
+    "HGNC's historical retrieval URL was not recorded. The supplied current locator is documented by the official HGNC download page; no equivalence to the historical snapshot is claimed.",
+    "No source contains perturbation response labels. The builder excludes unrelated legacy pilot, deployment and feature-generation stages."
+  ],
+  "assets": [
+    {
+      "id": "map",
+      "group": "qwen_graph",
+      "path": "assets/qwen_graph_sources/GENE-GENE_filtered_by_existing_genes.csv",
+      "url": "https://huggingface.co/datasets/RainGate/MAP-KG/resolve/2a9af1bd2645fef86fab495b85a1b08a52356e26/GENE-GENE_filtered_by_existing_genes.csv",
+      "source_page": "https://huggingface.co/datasets/RainGate/MAP-KG/tree/2a9af1bd2645fef86fab495b85a1b08a52356e26",
+      "size_bytes": 30749549,
+      "checksums": {"sha256": "742bbd685f1100e9168e4e6df75171b8a9917561d71e46d640908b1c16a2fd95"},
+      "license": "Upstream MAP-KG terms apply; no broader redistribution license inferred."
+    },
+    {
+      "id": "omnipath",
+      "group": "qwen_graph",
+      "path": "assets/qwen_graph_sources/omnipath_core_human.tsv",
+      "url": "https://omnipathdb.org/interactions?datasets=omnipath&organisms=9606&genesymbols=1&fields=sources,references,curation_effort&format=tsv",
+      "source_page": "https://omnipathdb.org/",
+      "size_bytes": 13377164,
+      "checksums": {"sha256": "a9a1bf13f2e700394faca3c43329ee51715e01f7267739c59cde7e3b7d612638"},
+      "license": "Component-specific OmniPath source licenses apply."
+    },
+    {
+      "id": "gene2ensembl",
+      "group": "qwen_graph",
+      "path": "assets/qwen_graph_sources/gene2ensembl.gz",
+      "url": "https://ftp.ncbi.nlm.nih.gov/gene/DATA/gene2ensembl.gz",
+      "source_page": "https://www.ncbi.nlm.nih.gov/datasets/docs/v2/data-processing/gene-processing/geneftp/",
+      "size_bytes": 317922318,
+      "checksums": {"sha256": "a43cb5e24ae3384ebc29b9333bf23fe6c1c1a3040f141f92ee36dbeca2aa949b"},
+      "license": "NCBI public data terms apply."
+    },
+    {
+      "id": "hgnc",
+      "group": "qwen_graph",
+      "path": "assets/qwen_graph_sources/hgnc_complete_set.tsv",
+      "url": "https://storage.googleapis.com/public-download-files/hgnc/tsv/tsv/hgnc_complete_set.txt",
+      "source_page": "https://www.genenames.org/download/",
+      "size_bytes": 16903161,
+      "checksums": {"sha256": "6f43d6ff43aa9fdfa5fb2f20a20a7cace66e6e02e2a0dcf19d9b726e2e248d20"},
+      "license": "HGNC public data terms apply."
+    }
+  ],
+  "historical_canonical_graph": {
+    "rows": 228749,
+    "sha256": "7616a5f963ad29274298b6899861bac2c033161cff565c8d36035f596ddfd1fb",
+    "parquet_byte_equality_requires_same_writer_version": true
+  },
+  "source_code_sha256": {
+    "r03_kg.py": "ceaa61a0d30c33ee121676a1f935e32491ad982919140558c0ff3d4f2f1a918a",
+    "r03_common.py": "b6f4b8c795bd41f02f3c132748e2c7ba4519e3dbc6c2fedd154cc395b6b2d836"
+  }
+}

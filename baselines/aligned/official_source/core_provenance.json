@@ -1,0 +1,22 @@
+{
+  "commit": "264e26e3fb826799c7f5e7637fa776d3feca4553",
+  "repository": "https://github.com/yfxiang0112/Aligned",
+  "files": {
+    "aligned/__init__.py": {
+      "git_blob_sha": "e69de29bb2d1d6434b8b29ae775ad8c2e48c5391",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "aligned/abl.py": {
+      "git_blob_sha": "caac52ce2c9d1422c75c1bfeaf4acb46bca671df",
+      "sha256": "f66cbbbaf712f4c8546cd9d8707dd9ab51d3fe5d7334a6b22b84b4be0953f3ed"
+    },
+    "aligned/reasoner.py": {
+      "git_blob_sha": "7f8c3215cd82ff39e0ba9c17189caf380710f5d6",
+      "sha256": "b6e9b221ffc4b4fa57e3203fb1b1535200727658f07e27f2e46ed6ca1f28bf67"
+    },
+    "aligned/learner_adap.py": {
+      "git_blob_sha": "cd9a8eb9a0903e9b08e5fb0c7356e480c40ed147",
+      "sha256": "8bd7cfd92c2a4b96a461c451d8f8c0506e12cf2535bdfbaae933665bd4403602"
+    }
+  }
+}

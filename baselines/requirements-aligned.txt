@@ -1,0 +1,10 @@
+# Install this alongside `pip install -e .` in a separate ALIGNED environment.
+# Compatibility requirements, not a claim of a historical binary lockfile.
+numpy>=1.26,<2
+scipy>=1.11
+pandas>=2.1
+scikit-learn>=1.4
+networkx>=3.2
+torch>=2.7
+# Required at import by the byte-identical official learner, including MLP runs.
+torch-geometric>=2.5

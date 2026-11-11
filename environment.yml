@@ -1,0 +1,11 @@
+name: s1pert
+channels:
+  - conda-forge
+dependencies:
+  - python=3.11
+  - pip
+  - pip:
+      - "-e .[test,train,paper]"
+# Install the CUDA-compatible PyTorch build for your GPU first if needed.
+# Frozen DECIDER encoding: requirements-backbone-tested.txt.
+# Keep SUMMER/vLLM and native baseline environments separate; see baselines/ASSETS.md.

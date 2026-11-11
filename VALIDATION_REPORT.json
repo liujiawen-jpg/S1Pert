@@ -1,29 +1,43 @@
 {
-  "schema": "s1pert.release-validation.v1",
+  "schema": "s1pert.release-validation.v2",
   "release_date": "2026-11-11",
-  "scope": "Anonymous source release, CPU correctness and portable execution interfaces",
+  "source_version": "0.3.0",
+  "scope": "Seven-stage source repository, synthetic CPU execution and portable interfaces",
   "status": "PASS",
-  "cpu_tests": {"passed": 123, "failed": 0, "python": "3.12.14"},
+  "cpu_tests": {"passed": 210, "failed": 0, "seconds": 45.00, "python": "3.12.14"},
   "wheel_build": "PASS",
-  "offline_data_download_plan": "PASS",
-  "offline_external_source_plan": "PASS",
-  "twenty_split_training_plan": "PASS",
-  "staged_baseline_imports_and_help": "PASS",
-  "core_model_fidelity": {
-    "fresh_head_parameter_equality": true,
-    "synthetic_output_logit_equality": true,
-    "historical_metric_fixtures_exact": 12,
-    "scope": "Selected A4 decoder and common metrics; CPU fixtures"
+  "isolated_wheel_install_and_cli": "PASS",
+  "twenty_split_offline_cli_plan": "PASS",
+  "runtime_separate_environment_worker_tests": "PASS",
+  "paper_source_coverage": {"stages_present": 7, "stages_expected": 7, "status": "SOURCE_COVERAGE_PASS"},
+  "aligned_source": {
+    "shared_package_files_checked": 179,
+    "shared_package_hash_mismatches": 0,
+    "original_core_hashes_checked": 7,
+    "scientific_engine_and_selected_official_files_byte_preserved": true,
+    "portable_wrappers_rebound_to_new_inputs": true,
+    "synthetic_both_rounds_training_and_separate_process_restoration": "PASS",
+    "canonical_continuous_final_hybrid_export": "PASS"
+  },
+  "public_knowledge_reconstruction": {
+    "original_raw_snapshot_hashes_checked": 9,
+    "signed_graph_rows_reconstructed": 122789,
+    "signed_graph_historical_row_digest_match": true,
+    "accession_symbol_rows_reconstructed": 20431,
+    "accession_symbol_historical_row_digest_match": true,
+    "full_real_GO_annotation_import_repeated": false,
+    "GO_verification": "Historical raw hashes, original importer AST fidelity and synthetic qualifier tests"
   },
   "anonymous_source_scan": {"status": "PASS", "findings": 0},
   "formal_training_started": false,
   "large_model_weights_loaded": false,
   "raw_datasets_downloaded": false,
   "full_gpu_reproduction_executed": false,
-  "limitations": [
-    "ALIGNED exact historical training source was unavailable; availability record included.",
-    "Live UniProt export and rebuilt public graph do not assert historical byte identity.",
-    "scGPT historical source/checkpoint identity remains unverified; manual assets documented.",
-    "Repository-wide license requires maintainer selection."
+  "reproduction_boundaries": [
+    "CPU fixtures and source coverage do not assert all biological scores have been regenerated.",
+    "Live annotation sources and documented public rebuild assets can differ from historical snapshots.",
+    "scGPT historical source/checkpoint identity remains unverified; manual assets are documented.",
+    "Finished historical run/cache identities are not transparently relocatable optimizer-resume states.",
+    "Original-code license requires repository-owner selection; third-party licenses are retained."
   ]
 }

@@ -12,6 +12,10 @@ def init(family,config,work):
     work=work.resolve()
     if work.exists():raise FileExistsError('Choose a new workspace; existing results are preserved')
     cfg=json.loads(config.read_text())
+    # Workspace configs can move independently of the source checkout. Metrics
+    # are executable package code, so bind them to this checkout when staging.
+    for key in ('metrics','a4_metrics'):
+        if key in cfg:cfg[key]=str(HERE.parent/'src/jev_a4/core/metrics.py')
     for key in PATH_KEYS & cfg.keys():
         path=Path(os.path.expandvars(cfg[key])).expanduser()
         cfg[key]=str((config.parent/path).resolve()) if not path.is_absolute() else str(path)

@@ -14,3 +14,4 @@ jobs:
       - run: python -m pytest -q
       - run: python -m jev_a4 run --config configs/a4.example.json --plan
       - run: python scripts/check_release.py
+      - run: python scripts/audit_paper_coverage.py

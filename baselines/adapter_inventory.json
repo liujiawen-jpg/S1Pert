@@ -53,5 +53,46 @@
     "file": "baselines/summer/code/gpu_admission.py",
     "source_sha256": "f41e1c85350b5b97ca42205ceecc2261a84ff2702e6818fe3acd22f6a661910c",
     "adaptation": "portable asset paths; scientific computation retained"
+  },
+  {
+    "file": "baselines/aligned/aligned_engine.py",
+    "source_sha256": "4da58e362385daa87849f8904569eef2d0bc9bb2b3c0bcd0cff0a91c62288483",
+    "adaptation": "byte-identical inspected scientific engine"
+  },
+  {
+    "file": "baselines/aligned/aligned_data.py",
+    "source_sha256": "7a37ca8cf0c327dd6e456982a496d89c2a1d076fef51bea9269298ee35292a3d",
+    "adaptation": "portable workspace and public input paths; shared strict input seals replace dependence on a completed GEARS run"
+  },
+  {
+    "file": "baselines/aligned/aligned_runtime.py",
+    "source_sha256": "6283205974175624eeb10d067da3063b73ad8db69aee1c293e664341bdef98b5",
+    "adaptation": "explicit workspace configuration; no import-time private path access"
+  },
+  {
+    "file": "baselines/aligned/aligned_runner.py",
+    "source_sha256": "557bb59b85f2d24f4337727bf7b266379b09bf6ed618c923509c97249dafc660",
+    "adaptation": "portable run paths and process gates; final continuous neural/KB probabilities reproduce the original final decision"
+  },
+  {
+    "file": "baselines/aligned/official_source/aligned/abl.py",
+    "source_sha256": "f66cbbbaf712f4c8546cd9d8707dd9ab51d3fe5d7334a6b22b84b4be0953f3ed",
+    "adaptation": "byte-identical official source",
+    "upstream_commit": "264e26e3fb826799c7f5e7637fa776d3feca4553",
+    "license": "CC-BY-4.0"
+  },
+  {
+    "file": "baselines/aligned/official_source/aligned/learner_adap.py",
+    "source_sha256": "8bd7cfd92c2a4b96a461c451d8f8c0506e12cf2535bdfbaae933665bd4403602",
+    "adaptation": "byte-identical official source",
+    "upstream_commit": "264e26e3fb826799c7f5e7637fa776d3feca4553",
+    "license": "CC-BY-4.0"
+  },
+  {
+    "file": "baselines/aligned/official_source/aligned/reasoner.py",
+    "source_sha256": "b6e9b221ffc4b4fa57e3203fb1b1535200727658f07e27f2e46ed6ca1f28bf67",
+    "adaptation": "byte-identical official source",
+    "upstream_commit": "264e26e3fb826799c7f5e7637fa776d3feca4553",
+    "license": "CC-BY-4.0"
   }
 ]

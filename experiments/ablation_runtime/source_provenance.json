@@ -1,0 +1,34 @@
+{
+  "schema": "s1pert.paper_ablation.source.v1",
+  "historical_sources": {
+    "exp2_decoder_ablations.py": "056c90b445f25217fee0dda271fac3a623ed63c7ba7084711d87c0fa48532924",
+    "inference.py": "0f042ab1ac9c893cbfc16a22d375fc22357cd3792dacce4a7ac0486900d2d5a6",
+    "runtime/model.py": "19e168e04626a8e919716ec5ebf65c44eb3cd2c7ab42d8a5d61f9ee75b7d1e2b",
+    "runtime/trainer.py": "940c664af9b5c8f958ee8bf43dc802b022664fca78e362480336e67dfb0d0270"
+  },
+  "ast_identical_scientific_definitions": [
+    "model.make_prior_model",
+    "trainer.model_config",
+    "trainer.settings",
+    "trainer.variant_of",
+    "trainer.Partition",
+    "trainer.selected_checkpoint"
+  ],
+  "adaptations": [
+    "Replace private paths and dynamic private imports with the packaged core training loop and explicit workspace.",
+    "Keep independent restore workers on the ablation adapter entry point.",
+    "Permit operating systems without Linux mmap cache hints.",
+    "Recompute table statistics from newly generated prediction files; no historical result CSV is an input.",
+    "No historical task checkpoint or prediction initializes a retrained arm. Optional main checkpoint reuse is evaluation-only."
+  ],
+  "no_jev_definition": "Keep condition, query and historical-evidence numeric tokens; zero and mask all standalone semantic landmarks; remove joint attention.",
+  "flat_definition": "Fresh 3-way linear softmax head, expressed as changed/direction log-odds to preserve exact multiclass likelihood and the historical pairwise objectives.",
+  "target_permutation": {
+    "rng": "numpy.default_rng(numpy.SeedSequence([split_seed, 20261108]))",
+    "stratification": "stable query-gene groups",
+    "fixed": ["query", "historical numeric evidence", "evidence cards", "evaluation labels"],
+    "changed": ["target condition", "target-specific joint cache lookup"],
+    "fixed_points_allowed": true
+  },
+  "release_validation": "Synthetic CPU mechanics only; no biological rerun or 4B inference."
+}

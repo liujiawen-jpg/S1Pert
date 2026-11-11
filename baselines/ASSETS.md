@@ -1,16 +1,21 @@
 # Public baseline assets
 
-Run these commands from the repository root. They acquire public source code or
-generic knowledge inputs; they do not install dependencies, launch training,
-download task-trained baseline checkpoints, or run evaluation.
+Run these commands from the repository root after initializing the paper
+workspace. All destination paths below are relative to that workspace, not the
+source checkout. Acquisition fetches public code and generic knowledge inputs;
+training is a separate command.
 
 ```bash
-python baselines/fetch_external.py --list
-python baselines/fetch_external.py --repo gears --repo perturbqa --repo state --dry-run
+export S1PERT_ROOT=/path/to/workspace
+python baselines/fetch_external.py --root "$S1PERT_ROOT" --list
+python baselines/fetch_external.py --root "$S1PERT_ROOT" \
+  --repo gears --repo perturbqa --repo state --repo scgpt --dry-run
 
 # Explicit acquisition; omit sources/assets for methods you are not running.
-python baselines/fetch_external.py --repo gears --repo perturbqa --repo state
-python baselines/fetch_external.py --asset kg --asset genept --asset gene2go
+python baselines/fetch_external.py --root "$S1PERT_ROOT" \
+  --repo gears --repo perturbqa --repo state --repo scgpt
+python baselines/fetch_external.py --root "$S1PERT_ROOT" \
+  --asset kg --asset genept --asset gene2go
 ```
 
 Listing and dry runs are offline and create no directories. Git and Python's
@@ -47,16 +52,19 @@ blocked, use the linked official file page and save its `gene2go.pkl` as
 `assets/baselines/gene2go_all.pkl`, checking the listed size/MD5 before use.
 No mirror or newly generated GO mapping is substituted automatically.
 
-The four raw matrices come from the main data downloader and remain under
-`data/raw/Nadig2024_GSE264667_raw/` and `data/raw/scPerturb_prepro/`.
-Classical `raw_root` must point to `data/raw`; it does not require a second copy.
-Prepared labels and target splits remain those of `workspace/a4/data`.
+The initialized workspace stores the four raw matrices under
+`$S1PERT_ROOT/raw/Nadig2024_GSE264667_raw/` and
+`$S1PERT_ROOT/raw/scPerturb_prepro/`. If initialization used `--data-root`, the
+configured external raw directory remains the input source. Classical
+`raw_root` points to that same raw directory; no second copy is needed.
+Prepared labels and target splits reside in `$S1PERT_ROOT/data`.
 
 ## SUMMER public edge database
 
 ```bash
 python baselines/prepare_public_edges.py \
-  --archive assets/baselines/kg.zip --out assets/public_edges.sqlite
+  --archive "$S1PERT_ROOT/assets/baselines/kg.zip" \
+  --out "$S1PERT_ROOT/assets/public_edges.sqlite"
 ```
 
 The converter verifies the pinned archive MD5 before reading `go.json`,
@@ -74,8 +82,9 @@ not been established. The converter records
 `historical_edge_database_equality_verified: false`; scores obtained with this
 rebuild must be identified as a public-asset rebuild.
 
-SUMMER also needs `assets/public_functions.sqlite`, built by the main UniProt
-pipeline, and a generic Qwen3-8B snapshot in `assets/qwen3_8b`. Acquire Qwen3-8B
+SUMMER also needs `$S1PERT_ROOT/assets/public_functions.sqlite`, built by the main
+UniProt pipeline, and a generic Qwen3-8B snapshot in
+`$S1PERT_ROOT/assets/qwen3_8b`. Acquire Qwen3-8B
 from its [official model repository](https://huggingface.co/Qwen/Qwen3-8B), pin a
 revision, and retain file hashes. This helper does not choose a changing model
 revision or download those weights. The same live-UniProt snapshot limitation
@@ -93,13 +102,14 @@ task-trained weights. The helper fetches only three files from that source:
 `meta.json`, `embeddings.npy`, and `aliases.yaml`, approximately 98.5 MB total.
 
 ```bash
-python baselines/fetch_external.py --asset esm2 --dry-run
-python baselines/fetch_external.py --asset esm2
-python baselines/prepare_esm2.py --source assets/esm2_public --out assets/esm2 \
-  --metadata workspace/a4/data/hepg2/dataset.json \
-  --metadata workspace/a4/data/jurkat/dataset.json \
-  --metadata workspace/a4/data/rpe1/dataset.json \
-  --metadata workspace/a4/data/k562_essential/dataset.json
+python baselines/fetch_external.py --root "$S1PERT_ROOT" --asset esm2 --dry-run
+python baselines/fetch_external.py --root "$S1PERT_ROOT" --asset esm2
+python baselines/prepare_esm2.py \
+  --source "$S1PERT_ROOT/assets/esm2_public" --out "$S1PERT_ROOT/assets/esm2" \
+  --metadata "$S1PERT_ROOT/data/hepg2/dataset.json" \
+  --metadata "$S1PERT_ROOT/data/jurkat/dataset.json" \
+  --metadata "$S1PERT_ROOT/data/rpe1/dataset.json" \
+  --metadata "$S1PERT_ROOT/data/k562_essential/dataset.json"
 ```
 
 The mapper requires NumPy. It reads target identities and symbols only, uses
@@ -121,8 +131,8 @@ protein encoder. Verify coverage before comparing reconstructed results.
 ## scGPT source and pretrained asset boundary
 
 ```bash
-python baselines/fetch_external.py --repo scgpt --dry-run
-python baselines/fetch_external.py --repo scgpt
+python baselines/fetch_external.py --root "$S1PERT_ROOT" --repo scgpt --dry-run
+python baselines/fetch_external.py --root "$S1PERT_ROOT" --repo scgpt
 ```
 
 The historical source copy had no Git metadata. This helper offers a verified
@@ -134,11 +144,56 @@ historical provenance.
 The pretrained vocabulary/configuration/checkpoint are a separate manual step.
 The official repository links its
 [whole-human model folder](https://drive.google.com/drive/folders/1oWh_-ZRdhtoGQ2Fw24HP41FgLoomVo-y).
-Place `vocab.json`, `args.json`, and `best_model.pt` together in `assets/scgpt`,
+Place `vocab.json`, `args.json`, and `best_model.pt` together in
+`$S1PERT_ROOT/assets/scgpt`,
 record hashes, and check compatibility with the adapter. The release has not
 verified this folder's checkpoint identity against the historical local file.
 No Drive credentials, task-trained scGPT checkpoint, or automatic fallback
 weights are embedded in the release.
+
+## Qwen3-4B classifier graph
+
+Place the generic Qwen3-4B snapshot at `$S1PERT_ROOT/assets/Qwen3-4B`, using the
+revision documented in [the adapter instructions](language/README.md). Its
+public graph is a separate Parquet asset; it is not SUMMER's SQLite edge file.
+The packaged constructor maps the recorded MAP-KG and OmniPath inputs through
+the recorded HGNC/NCBI identity bridges:
+
+```bash
+python scripts/download_assets.py --manifest baselines/language/graph_sources.json \
+  --root "$S1PERT_ROOT" --group qwen_graph --dry-run
+python scripts/download_assets.py --manifest baselines/language/graph_sources.json \
+  --root "$S1PERT_ROOT" --group qwen_graph
+python -m baselines.language.build_graph \
+  --source-dir "$S1PERT_ROOT/assets/qwen_graph_sources" \
+  --out "$S1PERT_ROOT/assets/public_edges.parquet"
+```
+
+Historical input hashes are checked before construction. Live public endpoints
+can change; use the recorded snapshots for historical-input reproduction. The
+builder's explicit `--allow-new-snapshots` mode records a new-public-input
+protocol when intentionally rebuilding with updated inputs.
+
+## ALIGNED signed knowledge and GO inputs
+
+The bundled ALIGNED engine consumes two public-only databases built from the
+packaged source manifest. Fetch into the same workspace and build them before
+the ALIGNED preparation/training commands:
+
+```bash
+python scripts/download_assets.py --manifest data_prep/public_knowledge/sources.json \
+  --root "$S1PERT_ROOT" --group public_knowledge --dry-run
+python scripts/download_assets.py --manifest data_prep/public_knowledge/sources.json \
+  --root "$S1PERT_ROOT" --group public_knowledge
+python -m data_prep.build_public_knowledge --work-dir "$S1PERT_ROOT"
+```
+
+The outputs are `$S1PERT_ROOT/assets/public_knowledge.sqlite` and
+`$S1PERT_ROOT/assets/public_go.sqlite`, with a provenance report identifying
+every input snapshot and consumed graph row. These files are distinct from
+the functional-description database and SUMMER's undirected retrieval graph.
+See [ALIGNED instructions](aligned/README.md) and the builder's `--help` for
+the source allowlist and the explicit updated-snapshot workflow.
 
 ## Historical annotation selection
 

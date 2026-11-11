@@ -11,8 +11,29 @@ knowledge archives, Qwen models and scGPT checkpoints likewise remain external
 assets governed by their original terms. See `baselines/ASSETS.md` for provenance.
 
 Qwen3-4B-LoRA and SUMMER-Qwen3-8B are disclosed local task adaptations, not claims
-of reproducing the unmodified source papers. ALIGNED's historical training source
-was unavailable for this release; its original third-party code is not included.
+of reproducing the unmodified source papers.
+
+## ALIGNED official core
+
+`baselines/aligned/official_source/aligned/` contains the required original
+ALIGNED core by Yuanfang Xiang and Lun Ai, from
+[yfxiang0112/Aligned](https://github.com/yfxiang0112/Aligned), commit
+`264e26e3fb826799c7f5e7637fa776d3feca4553`. The upstream declares Creative Commons
+Attribution 4.0 International (CC BY 4.0). Its notice is retained in
+`baselines/aligned/official_source/LICENSE`; the
+[upstream license file](https://github.com/yfxiang0112/Aligned/blob/264e26e3fb826799c7f5e7637fa776d3feca4553/LICENSE)
+was verified during packaging. Official source bytes and Git-blob/SHA256
+identities are checked by `core_provenance.json`.
+
+Cite Yuanfang Xiang and Lun Ai, *Adaptive Data-Knowledge Alignment in Genetic
+Perturbation Prediction*, ICLR 2026. The A4 adaptation uses the official MLP,
+R adaptor and symbolic reasoner with local strict-label/public-signed-KG inputs.
+The inspected local scientific engine is retained; release changes provide
+workspace paths, strict-data identity gates and continuous hybrid score export.
+Details and original adapter hashes are in `baselines/aligned/README.md` and
+`source_availability.json`. These adaptations do not imply upstream endorsement,
+and the upstream license does not assign a repository-wide license to the
+surrounding local research code.
 
 This document records what could be established from the supplied execution handoff and source files. It does not assign a license to this repository. See [LICENSE_STATUS.md](LICENSE_STATUS.md) and [provenance/source_inventory.json](provenance/source_inventory.json).
 

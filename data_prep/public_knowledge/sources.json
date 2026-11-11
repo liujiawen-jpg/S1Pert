@@ -1,0 +1,131 @@
+{
+  "schema": "s1pert.public-assets.v1",
+  "source_ast_sha256": {"public_import.py":{"module":"de9da01120faf895e8583269ac7d3bc64cc7acacc9e59aacbc86b67015277bba"},"mechanism_graph.py":{"canonical":"7e6795fc3c5d443fae2baeb8f4fd0e147369913e85430772811b5e2a7ab1aaf4","identity":"92accb64d34ab3b8c3dcf74024097d2be2aaf9c4a85c372d81e4e4316ef5e45c","Edge":"1d34b5822dfebb14f2702daa0ec7c8a8ae13f9971f77b13f7182f0af178d61c5","edge_from_record":"1bbc7e9589ddc4dfab45248a6fcad448e3aa053b56ebb41e40d62377be8429b7","parse_omnipath":"94d30bfbd45460bac0c3ed86e084c769de17f9be99cc445ff93d612013bbf2f8"}},
+  "root": "../..",
+  "historical_consumed_rows": {
+    "signed_input_rows": {"rows": 122789, "sha256": "9fc32115e2ce4eae65158350c25289ee123f4e297160391ae3f156db8912319f"},
+    "gene_mapping_rows": {"rows": 20431, "sha256": "2f2583d64e05e4675d8635b718e41278fc435179b9ad8b068b4782a21db5e999"},
+    "validation": "Rebuilt from the nine pinned raw sources and compared with the original ALIGNED public-only export, using the queries in build_public_knowledge.py; no model execution. GO importer AST is identical and GO raw checksums match; the full historical annotation table was not rebuilt during packaging."
+  },
+  "notes": [
+    "Historical raw inputs for the ALIGNED public-only input view; source snapshot inventory recorded 2026-10-02.",
+    "GO release locators use the original 2026-08-05 release and the documented post-June-2026 GAF directory layout; availability was not download-tested. Checksums, not filenames, identify the original bytes.",
+    "OmniPath, UniProt and Reactome URLs are live endpoints, not immutable snapshot URLs. Current downloads may differ and then default checksum verification stops. Explicit refreshed inputs must be reported as a different snapshot protocol.",
+    "UniProt historical release 2026_03 (2026-09-02), retrieved 2026-10-02. Reactome membership is derived from reviewed-human UniProt cross-references, not the full all-species/all-level export.",
+    "CollecTRI/SIGNOR use their original strict parser before the original legacy-record importer. Do not substitute the broader '-raw' import or rename its source.",
+    "Unsigned measured-gene-axis GO/STRING legacy edges are omitted: ALIGNED discards them before graph construction. Full GO OBO/GAF, signed records and UniProt mappings are retained. This is not a byte-identical full historical KB.",
+    "No empirical response tables, precomputed response predictions, measured-axis graph tensors or model checkpoints are inputs. Component source terms apply; OmniPath academic filter is not a blanket redistribution license."
+  ],
+  "assets": [
+    {
+      "id": "go_obo",
+      "group": "public_knowledge",
+      "path": "assets/public_knowledge_sources/go_obo.obo",
+      "url": "https://release.geneontology.org/2026-08-05/ontology/go-basic.obo",
+      "size_bytes": 32227785,
+      "checksums": {
+        "sha256": "b08d45b268b8c24ccb2513dbbbc7d4df9f6521c099b413f79eb31e06e0fa3bcc"
+      }
+    },
+    {
+      "id": "go_gaf",
+      "group": "public_knowledge",
+      "path": "assets/public_knowledge_sources/go_gaf.gaf.gz",
+      "url": "https://release.geneontology.org/2026-08-05/annotations/gaf/HUMAN-uniprot.gaf.gz",
+      "size_bytes": 12109254,
+      "checksums": {
+        "sha256": "a0afba19dfb1f8fa996bc1bdcd61fd0c9bd4cf0d2bf2509d09ac86993c0e70a2"
+      }
+    },
+    {
+      "id": "omnipath_core",
+      "group": "public_knowledge",
+      "path": "assets/public_knowledge_sources/omnipath_core.tsv",
+      "url": "https://omnipathdb.org/interactions?datasets=omnipath&organisms=9606&genesymbols=1&fields=sources,references,curation_effort&format=tsv",
+      "size_bytes": 13377164,
+      "checksums": {
+        "sha256": "a9a1bf13f2e700394faca3c43329ee51715e01f7267739c59cde7e3b7d612638"
+      }
+    },
+    {
+      "id": "collectri_raw",
+      "group": "public_knowledge",
+      "path": "assets/public_knowledge_sources/collectri_raw.tsv",
+      "url": "https://omnipathdb.org/interactions?format=tsv&genesymbols=yes&organisms=9606&license=academic&fields=sources%2Creferences%2Ctype%2Cncbi_tax_id&datasets=collectri",
+      "size_bytes": 18704763,
+      "checksums": {
+        "sha256": "0807d2b4f50a247425e22d037e8632577a903b91ca9a9bf95e0be3915a5695c7"
+      }
+    },
+    {
+      "id": "signor_raw",
+      "group": "public_knowledge",
+      "path": "assets/public_knowledge_sources/signor_raw.tsv",
+      "url": "https://omnipathdb.org/interactions?format=tsv&genesymbols=yes&organisms=9606&license=academic&fields=sources%2Creferences%2Ctype%2Cncbi_tax_id&resources=SIGNOR&types=post_translational",
+      "size_bytes": 11531903,
+      "checksums": {
+        "sha256": "582617309cabe47a95c060527d3aed68a186353244a7735b39fbcc2e275c9c27"
+      }
+    },
+    {
+      "id": "uniprot_tsv",
+      "group": "public_knowledge",
+      "path": "assets/public_knowledge_sources/uniprot_tsv.tsv",
+      "url": "https://rest.uniprot.org/uniprotkb/stream?query=%28organism_id%3A9606%29+AND+%28reviewed%3Atrue%29&format=tsv&fields=accession%2Cgene_primary%2Cgene_synonym%2Cprotein_name%2Ccc_function%2Ccc_subcellular_location%2Ccc_pathway",
+      "size_bytes": 19248208,
+      "checksums": {
+        "sha256": "0b92a6e64b52969c29eaf7f9b3824862286eda14fcf042970d9cf36aba029a5b"
+      },
+      "historical_retrieved_utc": "2026-10-02T16:38:45.943583+00:00"
+    },
+    {
+      "id": "reactome_pathways",
+      "group": "public_knowledge",
+      "path": "assets/public_knowledge_sources/reactome_pathways.tsv",
+      "url": "https://reactome.org/download/current/ReactomePathways.txt",
+      "size_bytes": 1592393,
+      "checksums": {
+        "sha256": "f6d7a2bf89b5bcfe0250a0bc7f51bff94641447911712b8ff129f5b55e52df3a"
+      },
+      "historical_retrieved_utc": "2026-10-02T16:47:28.420610+00:00"
+    },
+    {
+      "id": "reactome_hierarchy",
+      "group": "public_knowledge",
+      "path": "assets/public_knowledge_sources/reactome_hierarchy.tsv",
+      "url": "https://reactome.org/download/current/ReactomePathwaysRelation.txt",
+      "size_bytes": 634259,
+      "checksums": {
+        "sha256": "fd49a624d80c14eb37ae57a02e141d574d5ede3f60022bb99edbd909448a3f1e"
+      },
+      "historical_retrieved_utc": "2026-10-02T16:47:28.353725+00:00"
+    },
+    {
+      "id": "uniprot_reactome_xrefs",
+      "group": "public_knowledge",
+      "path": "assets/public_knowledge_sources/uniprot_reactome_xrefs.tsv",
+      "url": "https://rest.uniprot.org/uniprotkb/stream?query=%28organism_id%3A9606%29+AND+%28reviewed%3Atrue%29&format=tsv&fields=accession%2Cxref_reactome",
+      "size_bytes": 819724,
+      "checksums": {
+        "sha256": "ea5762d49501d84af3872f00228269699977fae5bf2dfc407b09998e57f00e0e"
+      },
+      "historical_retrieved_utc": "2026-10-02T16:52:20.463753+00:00"
+    }
+  ],
+  "documentation": [
+    "https://geneontology.org/docs/faq/",
+    "https://www.geneontology.org/docs/download-go-annotations/",
+    "https://www.uniprot.org/help/license",
+    "https://reactome.org/license"
+  ],
+  "historical_derived_membership": {
+    "sha256": "a32612cd434c0f6cb99cfd8efce5b78ae3d1f09093e87f19efc6a3dd4bc3f90c",
+    "size_bytes": 7468150,
+    "rows": 47079
+  },
+  "source_code_sha256": {
+    "public_import.py": "8df89bc7be0d683b141a1801a123ceeec4271f8d80ebecfaf14ba2b01e1fa0ef",
+    "mechanism_graph.py": "f635b3f09a773e02dce8439bfd3a24c46404b1ffc35290980e132fe3ea06b112",
+    "fetch_sources.py": "d481d85d28bd1988e5c329da0a9aff6cf7f286d174403bc63db2fd76e55a9579"
+  }
+}
