@@ -2,7 +2,7 @@
 
 ![S1Pert 框架图](S1Pert_framework.png)
 
-本指南介绍如何运行论文 Tables II–IV 与 Figures 1–3 对应的实验，包括逐样本结果生成、结果汇总和绘图。当前核心方法为 A4，该方法冻结 DECIDER-4B，用于提取三路输入及联合表示，并从头训练一个小型解码器，直接输出上调、不变和下调概率。
+本指南介绍如何运行论文 Tables II–IV 与 Figures 3–5 对应的实验，包括逐样本结果生成、结果汇总和绘图。当前核心方法为 A4，该方法冻结 DECIDER-4B，用于提取三路输入及联合表示，并从头训练一个小型解码器，直接输出上调、不变和下调概率。
 
 ## 一、安装与统一路径
 
@@ -73,17 +73,17 @@ bash experiments/run_runtime_fig3.sh --python-map configs/interpreters.example.j
 ```
 
 - Table IV：在 K562 的五个种子上，从头训练五类消融模型，并执行固定模型的靶点置换诊断。
-- Fig. 1：根据逐样本预测重新计算跨靶点 AUC、先验熵、逆倾向和训练支持度。
+- Fig. 3：根据逐样本预测重新计算跨靶点 AUC、先验熵、逆倾向和训练支持度。
 
-  ![Fig. 1：先验压力评价](fig_prior_stress.png)
+  ![Fig. 3：先验压力评价](fig_prior_stress.png)
 
-- Fig. 2：重新划分 K562 的不相交 A/B 细胞池，执行统计裁决和冻结模型边界评价。
+- Fig. 4：重新划分 K562 的不相交 A/B 细胞池，执行统计裁决和冻结模型边界评价。
 
-  ![Fig. 2：细胞池边界评价](fig_label_boundary.png)
+  ![Fig. 4：细胞池边界评价](fig_label_boundary.png)
 
-- Fig. 3：实际测量冷缓存、训练和推理耗时。该步骤会重新训练计时用模型，运行时间较长。
+- Fig. 5：实际测量冷缓存、训练和推理耗时。该步骤会重新训练计时用模型，运行时间较长。
 
-  ![Fig. 3：运行效率](fig_runtime_efficiency.png)
+  ![Fig. 5：运行效率](fig_runtime_efficiency.png)
 
 计时流程通过解释器映射分别运行 A4、ALIGNED 和 SUMMER，以避免不同依赖版本之间的冲突。在线时间取各子进程内部同步后的测量区间。进程启动开销单独记录，并计入端到端时间。
 

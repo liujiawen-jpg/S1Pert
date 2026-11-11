@@ -25,7 +25,7 @@ The complete registry contains every available method for four cell lines and fi
 
 Native invalid answers (`-1`) remain errors in classification metrics. Hard labels do not provide a continuous ranking score, so their AUC is unavailable. The evaluator verifies exact sample order and labels, unique target–query pairs, and disjoint TRAIN/test target sets. Optional `train_records` and `prior_features` registry columns override the corresponding workspace paths.
 
-## Stage 5: raw predictions → prior-stress metrics → Fig. 1
+## Stage 5: raw predictions → prior-stress metrics → Fig. 3
 
 ```bash
 python experiments/prior_stress.py --work-dir "$S1PERT_ROOT"
@@ -59,13 +59,13 @@ Quantile cutoffs are fitted on supported TRAIN query genes without using test la
 
 Counter-propensity pairs have ground-truth labels different from the TRAIN-majority class. Support strata use the counts of resolved TRAIN target–query pairs: at least 50, 10–49, 1–9, and zero. Test labels determine the evaluation truth and reversal mask. They never determine the historical evidence or entropy cutoffs.
 
-Fig. 1 displays S1Pert, P1, ALIGNED, GenePT-Prot, STATE, and GEARS. Panel **a** plots overall Macro-F1 against Pol AUC and labels each point with Chg AUC. Panel **b** plots entropy-stratified Macro-F1 and counter-propensity Down-F1 on separate axes. Panel **c** plots support-stratified Macro-F1. Means and sample SDs use the 20 cell-seed results. By default, plotting requires all 20 splits for every displayed metric. Empty or undefined strata remain missing and are not replaced with zero.
+Fig. 3 displays S1Pert, P1, ALIGNED, GenePT-Prot, STATE, and GEARS. Panel **a** plots overall Macro-F1 against Pol AUC and labels each point with Chg AUC. Panel **b** plots entropy-stratified Macro-F1 and counter-propensity Down-F1 on separate axes. Panel **c** plots support-stratified Macro-F1. Means and sample SDs use the 20 cell-seed results. By default, plotting requires all 20 splits for every displayed metric. Empty or undefined strata remain missing and are not replaced with zero.
 
 Paired two-sided Wilcoxon tests use matching cell and seed results. For each cell, stratum, and metric, Holm correction includes every comparator registered with the evaluator. Selecting six plotting methods does not reduce this family. The five target-held-out splits overlap. They are not five disjoint CV folds or independent biological replicates.
 
-![Fig. 1: prior-stress evaluation](../fig_prior_stress.png)
+![Fig. 3: prior-stress evaluation](../fig_prior_stress.png)
 
-## Stage 7: executed timing phases → Fig. 3
+## Stage 7: executed timing phases → Fig. 5
 
 ### Separate method environments
 
@@ -131,7 +131,7 @@ The generated plans cover all three methods at seed 17 on HepG2 and K562. For ad
 
 ### ALIGNED assets and final-prediction timing
 
-The restored historical adapter is packaged in `baselines/aligned`. Preparation uses the workspace public relation and GO databases, `assets/public_knowledge.sqlite` and `assets/public_go.sqlite`. Run the packaged asset-building workflow before the benchmark. The timing factory is `baselines.aligned.run:load_for_timing`. It restores the final-refinement model and applies the native final alignment rule. Fig. 3 requires successful measurements for S1Pert, ALIGNED, and SUMMER on both cell lines.
+The restored historical adapter is packaged in `baselines/aligned`. Preparation uses the workspace public relation and GO databases, `assets/public_knowledge.sqlite` and `assets/public_go.sqlite`. Run the packaged asset-building workflow before the benchmark. The timing factory is `baselines.aligned.run:load_for_timing`. It restores the final-refinement model and applies the native final alignment rule. Fig. 5 requires successful measurements for S1Pert, ALIGNED, and SUMMER on both cell lines.
 
 ### Timing log contract
 
@@ -149,9 +149,9 @@ python plotting/plot_fig3_runtime.py --work-dir "$S1PERT_ROOT" \
   --timing "$S1PERT_ROOT/paper/runtime_fresh/timings.json"
 ```
 
-Fig. 3 distinguishes loaded-model online timings from load-inclusive command timings and does not combine the two scopes. Every plotted value comes from a successful timing log. Sample SD is shown when multiple splits are measured. A single split receives no fabricated error bar.
+Fig. 5 distinguishes loaded-model online timings from load-inclusive command timings and does not combine the two scopes. Every plotted value comes from a successful timing log. Sample SD is shown when multiple splits are measured. A single split receives no fabricated error bar.
 
-![Fig. 3: runtime efficiency](../fig_runtime_efficiency.png)
+![Fig. 5: runtime efficiency](../fig_runtime_efficiency.png)
 
 ## Fonts and lightweight verification
 

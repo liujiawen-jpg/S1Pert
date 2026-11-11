@@ -1,6 +1,6 @@
-# Table III and Fig. 2: label support and the cell-pool boundary
+# Table III and Fig. 4: label support and the cell-pool boundary
 
-These stages compute the paper's statistics from prepared inputs. Table III reads the strict label arrays. Fig. 2 starts from the original K562-essential count matrix, creates the fixed disjoint A/B cell pools, adjudicates both pools, and evaluates the trained S1Pert model and its standalone P1 comparator.
+These stages compute the paper's statistics from prepared inputs. Table III reads the strict label arrays. Fig. 4 starts from the original K562-essential count matrix, creates the fixed disjoint A/B cell pools, adjudicates both pools, and evaluates the trained S1Pert model and its standalone P1 comparator.
 
 Install the package, then run all commands from the repository root. Every stage accepts `--work-dir`. The equivalent environment setting is `S1PERT_ROOT`.
 
@@ -54,7 +54,7 @@ Both pools use the original 1.2/0.05/20/10/3G-BH label protocol. The comparison 
 
 Fidelity bins use Pool-A perturbed-cell counts: all evaluated targets with at least 20 cells, 20–39, 40–79, 80–149, and at least 150. False invariance is the fraction assigned Same among Pool-B DE pairs satisfying Pool-A quality eligibility and self exclusion. Concordance uses pairs resolved in both pools. The output records candidate and eligible coverage separately.
 
-One historical denominator detail is retained. The `all` **candidate coverage** denominator also includes selected groups with 1–19 Pool-A cells. The reference-DE and concordance denominators include only evaluated groups with at least 20 Pool-A cells. This detail does not affect the displayed Fig. 2a/b metrics.
+One historical denominator detail is retained. The `all` **candidate coverage** denominator also includes selected groups with 1–19 Pool-A cells. The reference-DE and concordance denominators include only evaluated groups with at least 20 Pool-A cells. This detail does not affect the displayed Fig. 4a/b metrics.
 
 All counts are derived from the arrays. The optional `--expected-cells` argument for `build` and `--expected-reference-de` argument for `fidelity` or plotting assert a supplied audit expectation. They do not provide counts for the calculation.
 
@@ -80,9 +80,9 @@ Pool-B perturbed responses and labels serve only as evaluation references. The f
 
 ## Plot and verification
 
-Fig. 2a plots all derived Pool-A DE, Same, and unresolved outcomes for Pool-B DE pairs. Fig. 2b plots concordance across the five cell-count bins. Fig. 2c reports Macro-F1, balanced accuracy, and Up/Down/Same F1 for both nested subsets, with the sample standard deviation (`ddof=1`) across repeated target holdouts. The five target splits overlap, so the standard deviation measures split variation. Plotting reads the generated CSV files, checks summaries against per-seed results, and emits a source-hash audit. The paper output is `fig_label_boundary.pdf` plus a PNG file. The `fig2_label_boundary` aliases are retained. Times New Roman is preferred when installed, and DejaVu Serif is the default fallback. `--font` (alias `--font-family`) and `--font-fallback` select installed fonts. The audit records the requested and selected fonts. No font is bundled.
+Fig. 4a plots all derived Pool-A DE, Same, and unresolved outcomes for Pool-B DE pairs. Fig. 4b plots concordance across the five cell-count bins. Fig. 4c reports Macro-F1, balanced accuracy, and Up/Down/Same F1 for both nested subsets, with the sample standard deviation (`ddof=1`) across repeated target holdouts. The five target splits overlap, so the standard deviation measures split variation. Plotting reads the generated CSV files, checks summaries against per-seed results, and emits a source-hash audit. The paper output is `fig_label_boundary.pdf` plus a PNG file. The `fig2_label_boundary` aliases are retained. Times New Roman is preferred when installed, and DejaVu Serif is the default fallback. `--font` (alias `--font-family`) and `--font-fallback` select installed fonts. The audit records the requested and selected fonts. No font is bundled.
 
-![Fig. 2: cell-pool boundary evaluation](../fig_label_boundary.png)
+![Fig. 4: cell-pool boundary evaluation](../fig_label_boundary.png)
 
 Dependencies include the package data stack (NumPy, SciPy, pandas, PyArrow, and h5py), Matplotlib for plotting, and the pinned core PyTorch/Transformers/safetensors environment for real frozen inference. This stage requires no additional training framework.
 

@@ -13,9 +13,9 @@ the seven-stage source map without importing a model or starting an experiment.
 | Multilevel caching | `jev_a4.core.prepare`, `jev_a4.core.encode` | Source/cache seals | `data`, `cache` |
 | Table II | `experiments.main_table2` and the nine method adapters | `plotting.make_table2_main` | `paper/table2` |
 | Table IV | `experiments.ablation` | `plotting.make_table4_ablation` | `paper/table4` |
-| Fig. 1 | `experiments.prior_stress` | `plotting.plot_fig1_prior_stress` | `paper/prior_stress` |
-| Fig. 2 | `data_prep.cell_pool`, `experiments.cell_pool` | `plotting.plot_fig2_label_boundary` | `cell_pool`, `paper/fig2` |
-| Fig. 3 | `experiments.runtime_recipes`, `experiments.runtime` | `plotting.plot_fig3_runtime` | `paper/runtime_fresh` |
+| Fig. 3 | `experiments.prior_stress` | `plotting.plot_fig1_prior_stress` | `paper/prior_stress` |
+| Fig. 4 | `data_prep.cell_pool`, `experiments.cell_pool` | `plotting.plot_fig2_label_boundary` | `cell_pool`, `paper/fig2` |
+| Fig. 5 | `experiments.runtime_recipes`, `experiments.runtime` | `plotting.plot_fig3_runtime` | `paper/runtime_fresh` |
 
 Each path identifies a module or directory in this repository. Every renderer
 writes a manifest with its input files, statistics and generated PDF/PNG paths.
@@ -159,7 +159,7 @@ landmark combinations without task fitting. It retains the original full-control
 input context. Pool-B perturbed labels are used only for scoring.
 
 See `CELL_POOL.md` for the complete denominator, population and nesting definitions.
-Fig. 2 does not train a new model on Pool A.
+Fig. 4 does not train a new model on Pool A.
 
 ## Stage 7 — measured time, not historical constants
 
@@ -173,7 +173,7 @@ Offline S1Pert encoding and SUMMER public-summary construction are measured once
 and explicitly amortized over five splits. End-to-end cost includes setup.
 Loaded-model online cost excludes it. ALIGNED includes both rounds and its final
 knowledge inference. Per-10,000 latency is scaled from a complete test pass.
-Fig. 3 rejects inconsistent online timing scopes and incomplete end-to-end logs.
+Fig. 5 rejects inconsistent online timing scopes and incomplete end-to-end logs.
 A single measured split does not receive an invented standard deviation.
 
 ## Reproduction and release boundaries

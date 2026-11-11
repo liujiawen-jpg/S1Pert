@@ -6,7 +6,7 @@ S1Pert predicts **Up / Unchanged / Down** for a query gene under a genetic
 intervention in one cell line. Its frozen DECIDER-4B backbone encodes the
 intervention, the query and TRAIN-derived response evidence. A freshly trained
 conditional decoder produces the three-class probabilities. The release contains
-the upstream experiments and downstream renderers for Tables II–IV and Figures 1–3.
+the upstream experiments and downstream renderers for Tables II–IV and Figures 3–5.
 
 ## Documentation
 
@@ -272,7 +272,7 @@ prediction errors.
 
 ## Reproducibility
 
-### Measured runtime: Fig. 3
+### Measured runtime: Fig. 5
 
 ```bash
 # Plan only by default. This execution performs NEW cold-cache work and training.
@@ -298,7 +298,7 @@ and included in end-to-end cost. Keep the physical GPU selection consistent. See
 the timing guide for exact measurement scopes. Complete rationale generation with
 SUMMER can be expensive.
 
-![Fig. 3: runtime efficiency](fig_runtime_efficiency.png)
+![Fig. 5: runtime efficiency](fig_runtime_efficiency.png)
 
 ### Validation, packaging and reuse
 
@@ -343,7 +343,7 @@ The fixed-model permutation diagnostic shuffles targets within a query while
 keeping query and prior evidence unchanged, with no retraining or test tuning.
 Outputs: `paper/table4` plus native variant runs and diagnostic predictions.
 
-## Prior stress: Fig. 1
+## Prior stress: Fig. 3
 
 ```bash
 bash experiments/run_prior_stress_fig1.sh --execute
@@ -361,9 +361,9 @@ experiment. Undefined AUCs/empty strata remain missing, not zero. The complete
 figure requires 20 valid splits for each displayed metric. See the detailed guide
 for score conventions and the scope of repeated-split significance tests.
 
-![Fig. 1: prior-stress evaluation](fig_prior_stress.png)
+![Fig. 3: prior-stress evaluation](fig_prior_stress.png)
 
-## Disjoint cell pools and boundary evaluation: Fig. 2
+## Disjoint cell pools and boundary evaluation: Fig. 4
 
 ```bash
 bash experiments/run_cell_pool_fig2.sh --execute
@@ -379,7 +379,7 @@ full-control context. Pool-B perturbed responses enter evaluation truth only.
 Full-pool unknown pairs form a nested subset of A-unknown/B-resolved pairs.
 The stage does not train a new task model.
 
-![Fig. 2: cell-pool boundary evaluation](fig_label_boundary.png)
+![Fig. 4: cell-pool boundary evaluation](fig_label_boundary.png)
 
 # License and publication notes
 
