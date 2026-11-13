@@ -272,33 +272,7 @@ prediction errors.
 
 ## Reproducibility
 
-### Measured runtime: Fig. 5
 
-```bash
-# Plan only by default. This execution performs NEW cold-cache work and training.
-bash experiments/run_runtime_fig3.sh --python-map configs/interpreters.example.json --execute
-
-# Separate loaded-model online-only benchmark, no claim of complete end-to-end time:
-bash experiments/run_runtime_fig3.sh --runtime-mode online \
-  --python-map configs/interpreters.example.json --execute
-```
-
-Fresh mode measures HepG2 and K562 with seed 17 for S1Pert, ALIGNED and SUMMER.
-It runs offline preparation, actual training for applicable methods and complete
-TEST inference in new timing directories. The calculation explicitly amortizes
-offline S1Pert encoding and SUMMER public summaries across five splits. Online
-latency excludes model loading. End-to-end cost includes setup and all measured
-phases.
-Inference latency per 10,000 pairs is scaled from a complete timed test pass.
-The graph does not use saved prediction replay, stored hours, or hardcoded speedup.
-Use the interpreter map for S1Pert, ALIGNED and SUMMER. Their pinned dependencies
-belong in separate environments. Factory measurements occur inside the selected
-worker's synchronized timing region. Worker startup and IPC are recorded separately
-and included in end-to-end cost. Keep the physical GPU selection consistent. See
-the timing guide for exact measurement scopes. Complete rationale generation with
-SUMMER can be expensive.
-
-![Fig. 5: runtime efficiency](fig_runtime_efficiency.png)
 
 ### Validation, packaging and reuse
 
@@ -380,6 +354,34 @@ Full-pool unknown pairs form a nested subset of A-unknown/B-resolved pairs.
 The stage does not train a new task model.
 
 ![Fig. 4: cell-pool boundary evaluation](fig_label_boundary.png)
+
+### Measured runtime: Fig. 5
+
+```bash
+# Plan only by default. This execution performs NEW cold-cache work and training.
+bash experiments/run_runtime_fig3.sh --python-map configs/interpreters.example.json --execute
+
+# Separate loaded-model online-only benchmark, no claim of complete end-to-end time:
+bash experiments/run_runtime_fig3.sh --runtime-mode online \
+  --python-map configs/interpreters.example.json --execute
+```
+
+Fresh mode measures HepG2 and K562 with seed 17 for S1Pert, ALIGNED and SUMMER.
+It runs offline preparation, actual training for applicable methods and complete
+TEST inference in new timing directories. The calculation explicitly amortizes
+offline S1Pert encoding and SUMMER public summaries across five splits. Online
+latency excludes model loading. End-to-end cost includes setup and all measured
+phases.
+Inference latency per 10,000 pairs is scaled from a complete timed test pass.
+The graph does not use saved prediction replay, stored hours, or hardcoded speedup.
+Use the interpreter map for S1Pert, ALIGNED and SUMMER. Their pinned dependencies
+belong in separate environments. Factory measurements occur inside the selected
+worker's synchronized timing region. Worker startup and IPC are recorded separately
+and included in end-to-end cost. Keep the physical GPU selection consistent. See
+the timing guide for exact measurement scopes. Complete rationale generation with
+SUMMER can be expensive.
+
+![Fig. 5: runtime efficiency](fig_runtime_efficiency.png)
 
 # License and publication notes
 
